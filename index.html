@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Ascend — Learn, Practice, Interview</title>
+<meta name="description" content="Learn engineering skills and practice realistic AI mock interviews." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#12151C;
+  --ink-soft:#3C4250;
+  --muted:#6B7280;
+  --paper:#F4F6FA;
+  --paper-2:#FFFFFF;
+  --line:#E3E7EF;
+  --primary:#2C3968;
+  --primary-2:#1B2547;
+  --primary-tint:#EAEDF8;
+  --amber:#EE9F2E;
+  --amber-tint:#FCF0DA;
+  --teal:#189E86;
+  --teal-tint:#E1F4F0;
+  --coral:#DE5B3F;
+  --coral-tint:#FBE7E1;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow-1: 0 1px 2px rgba(18,21,28,0.06);
+  --shadow-2: 0 10px 30px -12px rgba(18,21,28,0.22);
+  --nav-w:250px;
+  --topbar-h:64px;
+  --bottomnav-h:64px;
+  --transition: 180ms cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box;}
+.ic{width:18px; height:18px; flex:none; display:inline-block; vertical-align:-3px;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  min-width:320px;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif; margin:0; color:var(--ink); line-height:1.15; font-weight:600;}
+p{margin:0; color:var(--ink-soft); line-height:1.55;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer;}
+code, .mono{font-family:'JetBrains Mono',monospace;}
+ul{margin:0; padding:0;}
+img,svg{display:block;}
+:focus-visible{outline:3px solid var(--amber); outline-offset:2px; border-radius:4px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+/* ============ LAYOUT SHELL ============ */
+#app{min-height:100vh;}
+.shell{display:flex; min-height:100vh;}
+.side-nav{
+  width:var(--nav-w); flex:none; background:var(--primary-2); color:#fff;
+  display:flex; flex-direction:column; padding:22px 16px; position:fixed; top:0; left:0; bottom:0; overflow-y:auto;
+}
+.brand{display:flex; align-items:center; gap:10px; padding:6px 8px 26px 8px;}
+.brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(155deg,var(--amber),#f6c165);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;color:var(--primary-2);font-size:16px;flex:none;}
+.brand-name{font-family:'Space Grotesk'; font-weight:700; font-size:19px; color:#fff; letter-spacing:0.2px;}
+.side-nav nav{display:flex; flex-direction:column; gap:2px; margin-top:6px;}
+.nav-link{
+  display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:10px; color:#C7CCE0;
+  font-size:14.5px; font-weight:500; transition:background var(--transition), color var(--transition); border:none; background:none; text-align:left; width:100%;
+}
+.nav-link .ic{width:19px; height:19px; flex:none; opacity:.9;}
+.nav-link:hover{background:rgba(255,255,255,0.07); color:#fff;}
+.nav-link.active{background:rgba(238,159,46,0.16); color:#fff;}
+.nav-link.active .ic{color:var(--amber);}
+.side-nav .spacer{flex:1;}
+.side-foot{border-top:1px solid rgba(255,255,255,0.1); padding-top:14px; margin-top:10px;}
+.profile-mini{display:flex; align-items:center; gap:10px; padding:8px; border-radius:10px;}
+.profile-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(155deg,#6B7CC9,#3A467E); display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex:none;}
+.profile-mini .pn{font-size:13.5px; font-weight:600; color:#fff;}
+.profile-mini .pr{font-size:12px; color:#9AA1BE;}
+
+.main-col{flex:1; margin-left:var(--nav-w); min-width:0; display:flex; flex-direction:column;}
+.topbar{
+  height:var(--topbar-h); flex:none; display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px; background:rgba(244,246,250,0.88); backdrop-filter:blur(6px); position:sticky; top:0; z-index:30;
+  border-bottom:1px solid var(--line);
+}
+.topbar-title{font-family:'Space Grotesk'; font-weight:600; font-size:18px;}
+.topbar-right{display:flex; align-items:center; gap:14px;}
+.streak-chip{display:flex; align-items:center; gap:6px; background:var(--amber-tint); color:#9C6A11; padding:6px 12px; border-radius:20px; font-size:13px; font-weight:600;}
+.xp-chip{display:flex; align-items:center; gap:6px; background:var(--teal-tint); color:#0E6E5C; padding:6px 12px; border-radius:20px; font-size:13px; font-weight:600;}
+
+.content{flex:1; padding:28px; max-width:1180px; width:100%; margin:0 auto;}
+.bottom-nav{display:none;}
+
+/* ============ COMMON COMPONENTS ============ */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:11px; border:none;
+  font-weight:600; font-size:14.5px; padding:12px 20px; transition:transform var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition);
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px) scale(0.99);}
+.btn-primary{background:var(--primary); color:#fff; box-shadow:var(--shadow-1);}
+.btn-primary:hover{background:var(--primary-2); box-shadow:var(--shadow-2);}
+.btn-amber{background:var(--amber); color:#3A2604;}
+.btn-amber:hover{background:#e2911d;}
+.btn-secondary{background:#fff; color:var(--primary); border:1.5px solid var(--line);}
+.btn-secondary:hover{border-color:var(--primary); background:var(--primary-tint);}
+.btn-ghost{background:transparent; color:var(--primary); padding:10px 8px;}
+.btn-ghost:hover{background:var(--primary-tint);}
+.btn-sm{padding:8px 14px; font-size:13px; border-radius:9px;}
+.btn:disabled{opacity:0.45; cursor:not-allowed; transform:none;}
+.btn-block{width:100%;}
+
+.card{background:var(--paper-2); border:1px solid var(--line); border-radius:var(--radius); transition:transform var(--transition), box-shadow var(--transition), border-color var(--transition);}
+.card-pad{padding:20px;}
+.card-hover:hover{transform:translateY(-3px); box-shadow:var(--shadow-2); border-color:#D7DCEA;}
+.grid{display:grid; gap:18px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+.split-2-1{grid-template-columns:2fr 1fr;}
+.split-13-1{grid-template-columns:1.3fr 1fr;}
+.row{display:flex; align-items:center;}
+.between{justify-content:space-between;}
+.gap-8{gap:8px;} .gap-10{gap:10px;} .gap-12{gap:12px;} .gap-16{gap:16px;}
+.wrap{flex-wrap:wrap;}
+.section{margin-bottom:34px;}
+.section-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px;}
+.section-head h2{font-size:20px;}
+.muted{color:var(--muted);}
+.small{font-size:13px;}
+.chip{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:20px; font-size:12.5px; font-weight:600;}
+.chip-primary{background:var(--primary-tint); color:var(--primary);}
+.chip-amber{background:var(--amber-tint); color:#9C6A11;}
+.chip-teal{background:var(--teal-tint); color:#0E6E5C;}
+.chip-coral{background:var(--coral-tint); color:#A3391F;}
+.chip-outline{background:#fff; border:1px solid var(--line); color:var(--muted);}
+
+.progress-track{height:8px; background:var(--line); border-radius:20px; overflow:hidden; width:100%;}
+.progress-fill{height:100%; border-radius:20px; background:linear-gradient(90deg,var(--primary),#5567AE); transition:width 500ms cubic-bezier(.2,.7,.3,1);}
+.progress-fill.teal{background:linear-gradient(90deg,var(--teal),#3ec4a8);}
+.progress-fill.amber{background:linear-gradient(90deg,var(--amber),#f6c165);}
+.progress-fill.coral{background:linear-gradient(90deg,var(--coral),#ec8367);}
+
+.icon-box{width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex:none;}
+.crumbs{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); margin-bottom:16px; flex-wrap:wrap;}
+.crumbs a:hover{color:var(--primary);}
+.crumbs .sep{opacity:.5;}
+
+.badge-dot{width:8px;height:8px;border-radius:50%; flex:none;}
+
+/* ============ HOME ============ */
+.hero{
+  background:linear-gradient(120deg,var(--primary-2) 0%, var(--primary) 62%, #3B4A8C 100%);
+  border-radius:22px; padding:44px 40px; color:#fff; position:relative; overflow:hidden; margin-bottom:30px;
+}
+.hero::after{content:''; position:absolute; right:-60px; top:-60px; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(238,159,46,0.25), transparent 70%);}
+.hero h1{font-size:38px; color:#fff; max-width:640px; position:relative; z-index:1;}
+.hero p.lead{color:#D6DAEE; max-width:520px; margin-top:14px; font-size:15.5px; position:relative; z-index:1;}
+.hero .actions{display:flex; gap:12px; margin-top:26px; position:relative; z-index:1; flex-wrap:wrap;}
+.hero .stats{display:flex; gap:28px; margin-top:32px; position:relative; z-index:1; flex-wrap:wrap;}
+.hero .stat b{font-family:'Space Grotesk'; font-size:22px; display:block; color:#fff;}
+.hero .stat span{font-size:12.5px; color:#AEB4D6;}
+
+.quick-tile{display:flex; align-items:center; gap:14px; padding:16px; cursor:pointer;}
+.quick-tile .arrow{margin-left:auto; opacity:0; transform:translateX(-4px); transition:all var(--transition); color:var(--primary);}
+.quick-tile:hover .arrow{opacity:1; transform:translateX(0);}
+.quick-tile:hover .icon-box{transform:translateY(-2px);}
+.icon-box{transition:transform var(--transition);}
+
+/* ============ BRANCH / SKILL CARDS ============ */
+.branch-card{padding:20px; cursor:pointer; display:flex; flex-direction:column; gap:12px;}
+.branch-card .top{display:flex; align-items:center; gap:14px;}
+.branch-card:hover{border-color:var(--primary);}
+.branch-card:hover .arrow{transform:translateX(2px); opacity:1;}
+.branch-card .arrow{opacity:.4; transition:all var(--transition);}
+.skill-tags{display:flex; flex-wrap:wrap; gap:6px;}
+
+.skill-row{display:flex; align-items:center; gap:16px; padding:16px 18px; cursor:pointer;}
+.skill-row:hover{border-color:var(--primary); background:#FAFBFF;}
+.skill-row .swatch{width:42px; height:42px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk'; font-weight:700; color:#fff; font-size:15px;}
+.skill-row .meta{flex:1; min-width:0;}
+.skill-row .prog-num{font-family:'Space Grotesk'; font-weight:700; font-size:15px; flex:none; width:52px; text-align:right;}
+
+.level-track{display:flex; flex-direction:column; gap:0;}
+.level-item{display:flex; align-items:flex-start; gap:16px; padding:18px 4px; position:relative; cursor:pointer;}
+.level-item .dot-col{display:flex; flex-direction:column; align-items:center; flex:none; width:34px;}
+.level-item .dot{width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12.5px; border:2px solid var(--line); background:#fff; color:var(--muted); flex:none; z-index:1;}
+.level-item .dot.done{background:var(--teal); border-color:var(--teal); color:#fff;}
+.level-item .dot.current{background:var(--primary); border-color:var(--primary); color:#fff; box-shadow:0 0 0 4px var(--primary-tint);}
+.level-item .line{width:2px; flex:1; background:var(--line); margin-top:2px; min-height:22px;}
+.level-item .line.done{background:var(--teal);}
+.level-item .body{flex:1; padding-bottom:2px;}
+.level-item:hover .body h4{color:var(--primary);}
+
+/* ============ LESSON VIEW ============ */
+.lesson-nav{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px;}
+.lesson-tab{padding:8px 15px; border-radius:9px; font-size:13.5px; font-weight:600; color:var(--muted); background:#fff; border:1px solid var(--line); cursor:pointer;}
+.lesson-tab.active{background:var(--primary); color:#fff; border-color:var(--primary);}
+.lesson-block{margin-bottom:26px;}
+.lesson-block h3{font-size:15px; text-transform:none; color:var(--primary); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+.scenario-box{background:var(--amber-tint); border:1px solid #F3DDAE; border-radius:14px; padding:18px 20px; font-size:14.5px; color:#5A4210;}
+.scenario-box b{color:#3A2604;}
+.code-box{background:#161B26; color:#DCE3F0; border-radius:14px; padding:18px 20px; font-size:13.5px; overflow-x:auto; line-height:1.7;}
+.code-box .k{color:#EE9F2E;} .code-box .s{color:#78D6A6;} .code-box .c{color:#7C87A6;}
+.activity-box{border:1.5px dashed #C9CFE0; border-radius:14px; padding:18px 20px; background:#FAFBFF;}
+
+.quiz-q{padding:18px 20px; margin-bottom:14px;}
+.quiz-opt{display:flex; align-items:center; gap:10px; padding:11px 14px; border:1.5px solid var(--line); border-radius:10px; margin-top:8px; cursor:pointer; font-size:14px; transition:all var(--transition);}
+.quiz-opt:hover{border-color:var(--primary); background:var(--primary-tint);}
+.quiz-opt.selected{border-color:var(--primary); background:var(--primary-tint);}
+.quiz-opt.correct{border-color:var(--teal); background:var(--teal-tint);}
+.quiz-opt.incorrect{border-color:var(--coral); background:var(--coral-tint);}
+.quiz-opt.disabled{cursor:default;}
+.opt-letter{width:24px; height:24px; border-radius:50%; background:#fff; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex:none; color:var(--muted);}
+
+.mastery-ring{width:104px;height:104px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; flex:none;}
+.mastery-ring svg{position:absolute; inset:0;}
+.mastery-ring .num{font-family:'Space Grotesk'; font-weight:700; font-size:22px; z-index:1;}
+
+/* ============ INTERVIEW ============ */
+.mode-card{padding:26px 22px; cursor:pointer; display:flex; flex-direction:column; gap:14px; position:relative;}
+.mode-card .icon-box{width:52px;height:52px; border-radius:14px; font-size:22px;}
+.mode-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-2); border-color:var(--primary);}
+.mode-card .go{position:absolute; right:20px; bottom:22px; opacity:0; transform:translateX(-6px); transition:all var(--transition); color:var(--primary); font-weight:700;}
+.mode-card:hover .go{opacity:1; transform:translateX(0);}
+
+.upload-zone{border:2px dashed #C9CFE0; border-radius:16px; padding:38px 24px; text-align:center; background:#FAFBFF; cursor:pointer; transition:all var(--transition);}
+.upload-zone:hover{border-color:var(--primary); background:var(--primary-tint);}
+.upload-zone.filled{border-style:solid; border-color:var(--teal); background:var(--teal-tint);}
+
+.detect-row{display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border:1px solid var(--line); border-radius:11px; margin-bottom:8px; background:#fff;}
+.detect-row.missing{border-color:#F3CBBB; background:var(--coral-tint);}
+
+.stage-track-v{display:flex; flex-direction:column; gap:0; width:150px; flex:none;}
+.stage-item{display:flex; align-items:flex-start; gap:10px; position:relative; padding-bottom:30px;}
+.stage-item:last-child{padding-bottom:0;}
+.stage-item .sdot{width:26px; height:26px; border-radius:50%; background:#fff; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; flex:none; z-index:1;}
+.stage-item .sdot.done{background:var(--teal); border-color:var(--teal);}
+.stage-item .sdot.current{background:var(--primary); border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-tint);}
+.stage-item .sline{position:absolute; left:12px; top:26px; bottom:0; width:2px; background:var(--line);}
+.stage-item .sline.done{background:var(--teal);}
+.stage-item .slabel{font-size:13.5px; font-weight:600; margin-top:2px;}
+.stage-item .sscore{font-size:12px; color:var(--muted);}
+.stage-track-h{display:none;}
+.stage-layout{display:flex; gap:16px; align-items:flex-start;}
+
+.difficulty-card{padding:20px; text-align:center; cursor:pointer; border-width:1.5px;}
+.difficulty-card.selected{border-color:var(--primary); background:var(--primary-tint);}
+.difficulty-card .emoji{font-size:28px; margin-bottom:6px;}
+
+.interview-stage{background:#0F1320; border-radius:22px; padding:0; overflow:hidden; color:#fff; position:relative;}
+.interview-top{display:flex; align-items:center; justify-content:space-between; padding:16px 22px; border-bottom:1px solid rgba(255,255,255,0.08);}
+.interview-top .qcount{font-size:13px; color:#9BA3C4;}
+.interview-body{padding:34px 30px 26px; display:flex; gap:28px; align-items:flex-start;}
+.ai-avatar{width:118px; height:118px; border-radius:18px; flex:none; background:linear-gradient(160deg,#232A44,#161B2E); display:flex; align-items:center; justify-content:center; position:relative; border:1px solid rgba(255,255,255,0.08);}
+.ai-avatar.talking .mouth{animation:talk 0.5s infinite alternate;}
+@keyframes talk{from{height:3px;} to{height:7px;}}
+.qzone{flex:1; min-width:0;}
+.qlabel{font-size:12.5px; color:#EE9F2E; font-weight:700; letter-spacing:0.3px; margin-bottom:10px;}
+.qtext{font-family:'Space Grotesk'; font-size:24px; font-weight:600; line-height:1.4; color:#fff;}
+.caption-box{margin-top:16px; background:rgba(255,255,255,0.06); border-radius:10px; padding:10px 14px; font-size:13.5px; color:#C7CCE0; min-height:20px;}
+.replay-btn{margin-top:16px;}
+.interview-bottom{padding:20px 30px 28px; border-top:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02);}
+.cam-prompt{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.cam-prompt-text{flex:1; min-width:200px;}
+.cam-prompt-actions{display:flex; gap:10px; flex-wrap:wrap; flex:none;}
+.cam-row{display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+.cam-preview{width:130px; height:96px; border-radius:12px; background:#000; overflow:hidden; flex:none; border:1px solid rgba(255,255,255,0.15); position:relative;}
+.cam-preview video{width:100%; height:100%; object-fit:cover;}
+.cam-off{display:flex; align-items:center; justify-content:center; height:100%; color:#666; font-size:11px; text-align:center; padding:4px;}
+.mic-controls{display:flex; align-items:center; gap:12px; flex:1;}
+.mic-btn{width:56px; height:56px; border-radius:50%; background:var(--coral); color:#fff; border:none; display:flex; align-items:center; justify-content:center; font-size:20px; flex:none; box-shadow:0 0 0 0 rgba(222,91,63,0.5); transition:all var(--transition);}
+.mic-btn.listening{animation:pulse 1.4s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(222,91,63,0.5);} 70%{box-shadow:0 0 0 14px rgba(222,91,63,0);} 100%{box-shadow:0 0 0 0 rgba(222,91,63,0);}}
+.waveform{display:flex; align-items:center; gap:3px; height:32px; flex:1;}
+.waveform span{width:3px; background:var(--amber); border-radius:2px; height:6px;}
+.waveform.active span{animation:wf 0.8s infinite ease-in-out;}
+.waveform span:nth-child(2n){animation-delay:0.15s;} .waveform span:nth-child(3n){animation-delay:0.3s;}
+@keyframes wf{0%,100%{height:6px;} 50%{height:26px;}}
+.transcript-box{margin-top:16px; background:rgba(255,255,255,0.05); border-radius:12px; padding:14px 16px; font-size:14px; color:#E6E9F4; min-height:44px;}
+.transcript-box .ph{color:#6B7394;}
+
+.eval-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:18px 0;}
+.eval-cell{text-align:center; background:#F7F8FC; border-radius:12px; padding:12px 6px;}
+.eval-cell b{font-family:'Space Grotesk'; font-size:19px; display:block;}
+.eval-cell span{font-size:11px; color:var(--muted);}
+.feedback-note{background:var(--primary-tint); border-radius:12px; padding:14px 16px; font-size:14px; color:var(--primary-2); border-left:3px solid var(--primary);}
+
+.result-hero{display:flex; align-items:center; gap:26px; flex-wrap:wrap;}
+.score-ring{width:150px; height:150px; border-radius:50%; flex:none; position:relative; display:flex; align-items:center; justify-content:center;}
+.score-ring svg{position:absolute; inset:0;}
+.score-ring .num{font-family:'Space Grotesk'; font-weight:700; font-size:34px; z-index:1;}
+.score-ring .lbl{position:absolute; bottom:26px; font-size:11px; color:var(--muted); z-index:1;}
+
+.strength-list li, .weak-list li{display:flex; align-items:flex-start; gap:8px; font-size:14px; margin-bottom:8px; color:var(--ink-soft);}
+.improve-compare{display:flex; align-items:center; gap:18px; justify-content:center; padding:20px 0;}
+.improve-compare .ibox{text-align:center;}
+.improve-compare .ibox b{font-family:'Space Grotesk'; font-size:28px; display:block;}
+.improve-compare .arrow-mid{font-size:22px; color:var(--teal);}
+
+/* ============ CHECKLIST ============ */
+.check-row{display:flex; align-items:center; gap:10px; padding:11px 14px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:8px; cursor:pointer; font-size:14px; font-weight:500;}
+.check-row.checked{border-color:var(--primary); background:var(--primary-tint);}
+.checkbox{width:18px; height:18px; border-radius:5px; border:2px solid #C9CFE0; flex:none; display:flex; align-items:center; justify-content:center; font-size:11px; color:#fff;}
+.check-row.checked .checkbox{background:var(--primary); border-color:var(--primary);}
+
+.count-pill{display:flex; gap:8px;}
+.count-pill button{padding:9px 18px; border-radius:9px; border:1.5px solid var(--line); background:#fff; font-weight:600; font-size:14px;}
+.count-pill button.selected{border-color:var(--primary); background:var(--primary-tint); color:var(--primary);}
+
+.empty-note{text-align:center; padding:40px 20px; color:var(--muted); font-size:14px;}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1020px){
+  .grid-4{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width: 900px){
+  .side-nav{display:none;}
+  .main-col{margin-left:0;}
+  .bottom-nav{
+    display:flex; position:fixed; bottom:0; left:0; right:0; height:var(--bottomnav-h); background:#fff;
+    border-top:1px solid var(--line); z-index:40; padding-bottom:env(safe-area-inset-bottom);
+  }
+  .bottom-nav a{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--muted); font-size:11px; font-weight:600; border:none; background:none;}
+  .bottom-nav a.active{color:var(--primary);}
+  .bottom-nav .ic{width:20px; height:20px;}
+  body{padding-bottom:var(--bottomnav-h);}
+  .content{padding:18px; padding-bottom:30px;}
+  .topbar{padding:0 16px;}
+  .hero{padding:28px 22px;}
+  .hero h1{font-size:27px;}
+  .stage-track-v{display:none;}
+  .stage-track-h{display:flex; justify-content:space-between; gap:8px; margin-bottom:20px;}
+  .stage-track-h .stage-item{flex-direction:column; align-items:center; padding-bottom:0; flex:1; text-align:center;}
+  .stage-track-h .sline{display:none;}
+  .stage-track-h .slabel{margin-top:2px;}
+  .stage-layout{flex-direction:column; align-items:stretch;}
+  .interview-body{flex-direction:column; padding:22px 18px;}
+  .ai-avatar{width:80px;height:80px;}
+  .qtext{font-size:19px;}
+  .eval-grid{grid-template-columns:repeat(2,1fr);}
+  .cam-prompt-actions{width:100%;}
+  .cam-prompt-actions .btn{flex:1;}
+  .cam-row{gap:12px;}
+}
+@media (max-width: 640px){
+  .grid-2, .grid-3, .grid-4, .split-2-1, .split-13-1{grid-template-columns:1fr;}
+  .hero .stats{gap:20px;}
+  .result-hero{justify-content:center; text-align:center;}
+  .cam-row{flex-direction:column; align-items:stretch;}
+  .mic-controls{width:100%;}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+"use strict";
+
+/* =========================================================================
+   ICONS (tiny inline SVG factory)
+========================================================================= */
+function Icon(name, cls){
+  cls = cls || 'ic';
+  const p = 'stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+  const paths = {
+    home:'<path '+p+' d="M4 10.5 12 4l8 6.5"/><path '+p+' d="M6 9.5V20h12V9.5"/>',
+    learn:'<path '+p+' d="M4 6.5C4 5.1 7 4 12 4s8 1.1 8 2.5v11C20 18.9 17 18 12 18s-8 .9-8 2.5z"/><path '+p+' d="M4 6.5v11M20 6.5v11M12 4v14"/>',
+    practice:'<path '+p+' d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.6" '+p+'/><circle cx="4.5" cy="12" r="1.6" '+p+'/><circle cx="4.5" cy="18" r="1.6" '+p+'/>',
+    interview:'<rect x="4" y="4.5" width="16" height="12" rx="2" '+p+'/><path '+p+' d="M9 20h6M12 16.5V20"/>',
+    progress:'<path '+p+' d="M4 20V11M10 20V4M16 20v-7M22 20H2"/>',
+    about:'<circle cx="12" cy="12" r="8.5" '+p+'/><path '+p+' d="M12 11v5M12 8v.3"/>',
+    arrow:'<path '+p+' d="M5 12h13M14 6l6 6-6 6"/>',
+    check:'<path '+p+' d="M4 12.5l5 5L20 6.5"/>',
+    upload:'<path '+p+' d="M12 15V4M8 8l4-4 4 4"/><path '+p+' d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>',
+    mic:'<rect x="9" y="3" width="6" height="11" rx="3" '+p+'/><path '+p+' d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+    play:'<path '+p+' d="M6 4.5v15l14-7.5z" fill="currentColor" stroke="none"/>',
+    cam:'<rect x="3" y="6" width="13" height="12" rx="2" '+p+'/><path '+p+' d="M16 10l5-3v10l-5-3"/>',
+    flame:'<path '+p+' d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c1 1 1.5 2.4 1.5 3.6A5.5 5.5 0 1 1 6 14.5c0-4 3-6 6-11.5z"/>',
+    bolt:'<path '+p+' d="M13 3 5 14h6l-1 7 8-11h-6l1-7z" fill="currentColor" stroke="none"/>',
+    badge:'<path '+p+' d="M12 3l2.6 2.1 3.3-.2 1 3.1 2.8 1.8-1.4 3 1.4 3-2.8 1.8-1 3.1-3.3-.2L12 22l-2.6-2.1-3.3.2-1-3.1-2.8-1.8 1.4-3-1.4-3 2.8-1.8 1-3.1 3.3.2z"/>',
+  };
+  return '<svg class="'+cls+'" viewBox="0 0 24 24" aria-hidden="true">'+ (paths[name]||'') +'</svg>';
+}
+
+/* =========================================================================
+   DATA
+========================================================================= */
+const BRANCHES = [
+  {id:'cse', name:'Computer Science & IT', tagline:'Software, systems & data', color:'#2C3968', skills:[
+    {id:'c', name:'C', cat:'Programming'},
+    {id:'cpp', name:'C++', cat:'Programming'},
+    {id:'java', name:'Java', cat:'Programming'},
+    {id:'python', name:'Python', cat:'Programming'},
+    {id:'javascript', name:'JavaScript', cat:'Programming'},
+    {id:'typescript', name:'TypeScript', cat:'Programming'},
+    {id:'oop', name:'OOP', cat:'Core CS'},
+    {id:'dsa', name:'DSA', cat:'Core CS'},
+    {id:'dbms', name:'DBMS', cat:'Core CS'},
+    {id:'os', name:'Operating Systems', cat:'Core CS'},
+    {id:'networks', name:'Computer Networks', cat:'Core CS'},
+    {id:'architecture', name:'Computer Architecture', cat:'Core CS'},
+    {id:'html', name:'HTML', cat:'Development'},
+    {id:'css', name:'CSS', cat:'Development'},
+    {id:'react', name:'React', cat:'Development'},
+    {id:'node', name:'Node.js', cat:'Development'},
+    {id:'restapi', name:'REST APIs', cat:'Development'},
+    {id:'git', name:'Git & GitHub', cat:'Development'},
+    {id:'cloud', name:'Cloud Computing', cat:'Advanced'},
+    {id:'aws', name:'AWS Basics', cat:'Advanced'},
+    {id:'docker', name:'Docker', cat:'Advanced'},
+    {id:'devops', name:'DevOps', cat:'Advanced'},
+    {id:'sysdesign', name:'System Design', cat:'Advanced'},
+    {id:'ai', name:'Artificial Intelligence', cat:'Advanced'},
+    {id:'ml', name:'Machine Learning', cat:'Advanced'},
+    {id:'cybersecurity', name:'Cyber Security', cat:'Advanced'},
+    {id:'aptitude', name:'Aptitude', cat:'Career Skills'},
+    {id:'reasoning', name:'Logical Reasoning', cat:'Career Skills'},
+    {id:'communication', name:'Communication', cat:'Career Skills'},
+    {id:'interviewskills', name:'Interview Skills', cat:'Career Skills'},
+    {id:'resumeskills', name:'Resume Building', cat:'Career Skills'},
+  ]},
+  {id:'ece', name:'Electronics & Communication', tagline:'Circuits, signals & chips', color:'#1B7A6B', skills:[
+    {id:'digital-electronics', name:'Digital Electronics', cat:'Core'},
+    {id:'analog-electronics', name:'Analog Electronics', cat:'Core'},
+    {id:'microprocessors', name:'Microprocessors', cat:'Core'},
+    {id:'embedded', name:'Embedded Systems', cat:'Core'},
+    {id:'vlsi', name:'VLSI Design', cat:'Advanced'},
+    {id:'comm-systems', name:'Communication Systems', cat:'Core'},
+    {id:'iot', name:'IoT', cat:'Advanced'},
+  ]},
+  {id:'eee', name:'Electrical & Electronics', tagline:'Power, machines & control', color:'#A05A2C', skills:[
+    {id:'circuit-theory', name:'Circuit Theory', cat:'Core'},
+    {id:'electrical-machines', name:'Electrical Machines', cat:'Core'},
+    {id:'power-systems', name:'Power Systems', cat:'Core'},
+    {id:'control-systems', name:'Control Systems', cat:'Core'},
+    {id:'power-electronics', name:'Power Electronics', cat:'Advanced'},
+    {id:'renewable-energy', name:'Renewable Energy', cat:'Advanced'},
+  ]},
+  {id:'mech', name:'Mechanical Engineering', tagline:'Machines, motion & manufacturing', color:'#5C3B94', skills:[
+    {id:'engg-mechanics', name:'Engineering Mechanics', cat:'Core'},
+    {id:'thermodynamics-m', name:'Thermodynamics', cat:'Core'},
+    {id:'fluid-mechanics-m', name:'Fluid Mechanics', cat:'Core'},
+    {id:'manufacturing', name:'Manufacturing', cat:'Core'},
+    {id:'cad', name:'CAD', cat:'Development'},
+    {id:'machine-design', name:'Machine Design', cat:'Advanced'},
+    {id:'materials', name:'Materials Science', cat:'Core'},
+  ]},
+  {id:'civil', name:'Civil Engineering', tagline:'Structures, sites & cities', color:'#8A6D1E', skills:[
+    {id:'structural', name:'Structural Engineering', cat:'Core'},
+    {id:'surveying', name:'Surveying', cat:'Core'},
+    {id:'concrete-tech', name:'Concrete Technology', cat:'Core'},
+    {id:'geotech', name:'Geotechnical Engineering', cat:'Core'},
+    {id:'transportation', name:'Transportation Engg', cat:'Core'},
+    {id:'environmental', name:'Environmental Engg', cat:'Core'},
+    {id:'autocad', name:'AutoCAD', cat:'Development'},
+  ]},
+  {id:'chem', name:'Chemical Engineering', tagline:'Processes, reactions & plants', color:'#B5482F', skills:[
+    {id:'chem-process', name:'Chemical Process', cat:'Core'},
+    {id:'thermodynamics-c', name:'Thermodynamics', cat:'Core'},
+    {id:'fluid-mechanics-c', name:'Fluid Mechanics', cat:'Core'},
+    {id:'heat-transfer', name:'Heat Transfer', cat:'Core'},
+    {id:'mass-transfer', name:'Mass Transfer', cat:'Core'},
+    {id:'process-control', name:'Process Control', cat:'Advanced'},
+  ]},
+  {id:'aero', name:'Aerospace Engineering', tagline:'Flight, structures & propulsion', color:'#2B5B8C', skills:[
+    {id:'aerodynamics', name:'Aerodynamics', cat:'Core'},
+    {id:'flight-mechanics', name:'Flight Mechanics', cat:'Core'},
+    {id:'propulsion', name:'Propulsion', cat:'Core'},
+    {id:'aero-structures', name:'Aerospace Structures', cat:'Advanced'},
+  ]},
+  {id:'biotech', name:'Biotechnology', tagline:'Biology meets engineering', color:'#3C7A3E', skills:[
+    {id:'molecular-bio', name:'Molecular Biology', cat:'Core'},
+    {id:'genetic-engg', name:'Genetic Engineering', cat:'Core'},
+    {id:'bioprocess', name:'Bioprocess Engineering', cat:'Core'},
+    {id:'immunology', name:'Immunology', cat:'Core'},
+  ]},
+];
+
+const LEVELS = [
+  {key:'beginner', label:'Beginner', short:'Beg'},
+  {key:'fundamentals', label:'Fundamentals', short:'Fund'},
+  {key:'intermediate', label:'Intermediate', short:'Int'},
+  {key:'advanced', label:'Advanced', short:'Adv'},
+  {key:'interviewready', label:'Interview Ready', short:'IR'},
+];
+
+function findSkill(skillId){
+  for(const b of BRANCHES){ for(const s of b.skills){ if(s.id===skillId) return {skill:s, branch:b}; } }
+  return null;
+}
+function findBranch(branchId){ return BRANCHES.find(b=>b.id===branchId); }
+
+/* ---- Hand-authored rich lessons for flagship skills; generic generator covers the rest ---- */
+const CUSTOM_LESSONS = {
+  'java|beginner':{
+    explanation:"Java is a strongly-typed, object-oriented language that runs on the Java Virtual Machine (JVM) — write once, run anywhere. At the beginner stage you're learning the building blocks: variables, data types, conditions, loops and methods.",
+    scenario:"Imagine you're building a simple billing counter for a college canteen. You need to store the item price, count how many items were bought, decide whether a discount applies, and repeat the billing for every customer in the queue.",
+    code:'<span class="k">public class</span> Billing {\n  <span class="k">public static void</span> main(String[] args) {\n    <span class="k">double</span> price = 45.0;\n    <span class="k">int</span> qty = 3;\n    <span class="k">double</span> total = price * qty;\n    <span class="k">if</span> (total > 100) {\n      total = total * 0.9; <span class="c">// 10% discount</span>\n    }\n    System.out.println(<span class="s">"Total: "</span> + total);\n  }\n}',
+    activity:"Rewrite the billing example above so it loops over 5 customers using a for-loop, and prints a different total for each one. Try changing the discount threshold and see how the output changes.",
+    quiz:[
+      {q:'Which keyword declares a variable that cannot be reassigned in Java?', options:['var','final','const','static'], correct:1, explain:'"final" prevents reassignment once a value is set.'},
+      {q:'What does this print? int x = 5; x++; System.out.println(x);', options:['5','6','4','Error'], correct:1, explain:'The post-increment operator adds 1, so x becomes 6.'},
+      {q:'Which loop is best when the number of iterations is known in advance?', options:['while','for','do-while','if'], correct:1, explain:'A for-loop is designed for a known iteration count.'},
+      {q:'What is the return type of a method that returns nothing?', options:['null','void','empty','none'], correct:1, explain:'"void" means the method returns no value.'},
+      {q:'Which data type would you use to store a price like 45.50?', options:['int','boolean','double','char'], correct:2, explain:'"double" stores decimal (floating point) values.'},
+    ],
+  },
+  'java|fundamentals':{
+    explanation:"Fundamentals introduce Java's object-oriented core: classes, objects, constructors, and the basics of encapsulation. A class is a blueprint; an object is a real instance built from that blueprint.",
+    scenario:"You're modelling students for a college portal. Every student has a name, roll number and marks — instead of separate variables for each student, you design one 'Student' blueprint and create many objects from it.",
+    code:'<span class="k">class</span> Student {\n  String name;\n  <span class="k">int</span> rollNo;\n\n  Student(String name, <span class="k">int</span> rollNo) { <span class="c">// constructor</span>\n    <span class="k">this</span>.name = name;\n    <span class="k">this</span>.rollNo = rollNo;\n  }\n\n  <span class="k">void</span> display() {\n    System.out.println(name + <span class="s">" - "</span> + rollNo);\n  }\n}\n<span class="c">// Student s1 = new Student("Asha", 101);</span>',
+    activity:"Add a 'marks' field to Student and a method getGrade() that returns 'A' if marks >= 90, else 'B'. Create three Student objects and print each grade.",
+    quiz:[
+      {q:'What is a constructor used for?', options:['Deleting objects','Initializing a new object','Looping','Importing packages'], correct:1, explain:'Constructors set up initial state when an object is created.'},
+      {q:'What keyword refers to the current object inside a class?', options:['self','this','current','me'], correct:1, explain:'"this" refers to the calling object.'},
+      {q:'A class is best described as:', options:['A running program','A blueprint for objects','A loop','A database table'], correct:1, explain:'Classes define structure; objects are instances of that structure.'},
+      {q:'Which of these is an object, not a class?', options:['Student','new Student("A",1)','class Student{}','Student.java'], correct:1, explain:'"new Student(...)" creates an actual object instance.'},
+      {q:'Encapsulation mainly means:', options:['Hiding internal details behind methods','Running faster code','Using loops','Creating threads'], correct:0, explain:'Encapsulation bundles data with methods and restricts direct access.'},
+    ],
+  },
+  'java|intermediate':{
+    explanation:"At the intermediate level you combine classes through inheritance, polymorphism, abstraction, interfaces, collections and exception handling — the tools that let large codebases stay flexible and safe.",
+    scenario:"You're designing a vehicle system for a ride-sharing app. Cars, bikes and autos all need a start() and fare() behavior, but each calculates fare differently. How would you structure this with OOP instead of writing separate, disconnected code for each vehicle?",
+    code:'<span class="k">abstract class</span> Vehicle {\n  <span class="k">abstract double</span> fare(<span class="k">double</span> km);\n}\n<span class="k">class</span> Bike <span class="k">extends</span> Vehicle {\n  <span class="k">double</span> fare(<span class="k">double</span> km) { <span class="k">return</span> km * 8; }\n}\n<span class="k">class</span> Car <span class="k">extends</span> Vehicle {\n  <span class="k">double</span> fare(<span class="k">double</span> km) { <span class="k">return</span> km * 15; }\n}\n<span class="c">// Vehicle v = new Car(); v.fare(10) -> polymorphic call</span>',
+    activity:"Create an interface Payable with method pay(). Implement it in two classes, CreditCard and UPI, each printing a different confirmation message. Store both in a List<Payable> and call pay() on each — this is polymorphism at work.",
+    quiz:[
+      {q:'Polymorphism allows:', options:['Only one class to exist','The same method call to behave differently per object type','Removing all methods','Skipping constructors'], correct:1, explain:'Polymorphism lets a single interface represent different underlying behaviors.'},
+      {q:'An abstract class can:', options:['Never be extended','Contain both abstract and concrete methods','Only contain static methods','Not have constructors'], correct:1, explain:'Abstract classes may mix implemented and unimplemented methods.'},
+      {q:'Which collection maintains unique elements only?', options:['List','Set','Array','Map.Entry'], correct:1, explain:'A Set does not allow duplicate elements.'},
+      {q:'try/catch is primarily used to:', options:['Speed up loops','Handle runtime exceptions gracefully','Declare variables','Create objects'], correct:1, explain:'Exception handling prevents a runtime error from crashing the whole program.'},
+      {q:'An interface in Java is best used to:', options:['Store data only','Define a contract of methods classes must implement','Replace all classes','Slow down compilation'], correct:1, explain:'Interfaces define behavior contracts independent of implementation.'},
+    ],
+  },
+  'java|advanced':{
+    explanation:"Advanced Java covers multithreading, the Java 8+ Streams API, performance tuning and common design patterns — the tools used to build responsive, maintainable, production-grade systems.",
+    scenario:"Your e-commerce backend needs to send order confirmation emails without freezing the checkout flow, and needs to process thousands of order records efficiently. How do threads and streams help here?",
+    code:'List<Order> orders = getOrders();\n<span class="k">double</span> totalRevenue = orders.stream()\n    .filter(o -> o.isPaid())\n    .mapToDouble(Order::getAmount)\n    .sum();\n\n<span class="k">new</span> Thread(() -> sendConfirmationEmail(order)).start();',
+    activity:"Rewrite a for-loop that filters 'paid' orders and sums their amount using the Streams API (filter + mapToDouble + sum). Then identify one place in a real app where running a task on a separate thread would improve responsiveness.",
+    quiz:[
+      {q:'A key benefit of using a separate thread for email-sending is:', options:['The main thread is blocked','The checkout flow stays responsive','It uses less memory always','It removes the need for exception handling'], correct:1, explain:'Offloading slow I/O to another thread keeps the main flow responsive.'},
+      {q:'Streams in Java 8+ are best described as:', options:['A way to store files','A functional pipeline for processing collections','A network protocol','A type of exception'], correct:1, explain:'Streams let you express collection processing declaratively (filter/map/reduce).'},
+      {q:'The Singleton design pattern ensures:', options:['Multiple instances always exist','Only one instance of a class exists app-wide','Classes cannot be instantiated','Threads run sequentially'], correct:1, explain:'Singleton restricts a class to a single shared instance.'},
+      {q:'A common risk of multithreading is:', options:['Slower compilation only','Race conditions on shared data','Fewer classes','Smaller JAR files'], correct:1, explain:'Concurrent access to shared state without synchronization can cause race conditions.'},
+      {q:'method::reference syntax (e.g. Order::getAmount) is:', options:['A comment','A method reference used in functional code','A deprecated feature','A type cast'], correct:1, explain:'It is shorthand for a lambda that calls an existing method.'},
+    ],
+  },
+  'java|interviewready':{
+    explanation:"Interview-ready practice blends everything: be ready to explain OOP concepts with real examples, reason about collections/complexity trade-offs, and walk through small design scenarios out loud.",
+    scenario:"An interviewer says: 'You mentioned building a REST API using Spring Boot. Can you explain how you handled exception handling in that project?' Structure your answer: what the problem was, what you implemented (e.g. @ControllerAdvice / custom exceptions), and the outcome.",
+    code:'<span class="c">// Sample structured answer outline</span>\n<span class="c">// 1) Context: what the API did</span>\n<span class="c">// 2) Problem: unhandled exceptions returned raw 500 errors</span>\n<span class="c">// 3) Solution: @ExceptionHandler + custom error response DTO</span>\n<span class="c">// 4) Result: consistent, client-friendly error codes</span>',
+    activity:"Practice answering out loud: 'When would you choose composition over inheritance?' Aim for 60-90 seconds using a concrete example (e.g. a Car 'has-a' Engine vs a Car 'is-a' Vehicle).",
+    quiz:[
+      {q:'A strong interview answer about a past project should include:', options:['Only buzzwords','Context, your specific contribution, and outcome','Just the tech stack list','Apologizing for mistakes'], correct:1, explain:'Structured answers (situation → action → result) are far more convincing.'},
+      {q:'"Composition over inheritance" is generally preferred when:', options:['Classes share an "is-a" relationship strictly','You want flexible "has-a" relationships and less tight coupling','You never need to reuse code','Interfaces are unavailable'], correct:1, explain:'Composition avoids the rigidity of deep inheritance chains.'},
+      {q:'When asked "What was the hardest bug you fixed?", interviewers mainly assess:', options:['Whether you memorized the fix','Your debugging process and reasoning','How fast you type','Your GPA'], correct:1, explain:'They want to see your problem-solving approach, not just the outcome.'},
+      {q:'HashMap vs TreeMap — a good interview distinction is:', options:['They are identical','HashMap is unordered O(1) average access, TreeMap keeps sorted order O(log n)','TreeMap is always faster','HashMap cannot store objects'], correct:1, explain:'This trade-off between speed and ordering is a classic interview point.'},
+      {q:'The best way to handle a question you truly don\'t know is:', options:['Stay silent','Say you don\'t know and reason through it out loud with what you do know','Make up an answer confidently','Change the subject'], correct:1, explain:'Interviewers value honest, structured reasoning over confident guessing.'},
+    ],
+  },
+  'oop|beginner':{
+    explanation:"Object-Oriented Programming organizes code around 'objects' — bundles of data and behavior — instead of a long list of instructions. The four pillars are encapsulation, abstraction, inheritance and polymorphism.",
+    scenario:"Imagine you are designing a vehicle system. Cars, bikes and buses all have a start() behavior. How would you structure this using OOP instead of writing separate if-else blocks for each vehicle type?",
+    code:'<span class="k">class</span> Vehicle {\n  <span class="k">void</span> start() { System.out.println(<span class="s">"Starting..."</span>); }\n}\n<span class="k">class</span> Car <span class="k">extends</span> Vehicle {\n  <span class="k">void</span> start() { System.out.println(<span class="s">"Car engine on"</span>); }\n}',
+    activity:"List three real-world objects around you right now. For each, write down 2 pieces of data (attributes) and 2 behaviors (methods) they would have as a class.",
+    quiz:[
+      {q:'An "object" in OOP is:', options:['A file on disk','An instance of a class combining data and behavior','A loop construct','A database'], correct:1, explain:'Objects bundle state (attributes) with behavior (methods).'},
+      {q:'Which pillar hides internal implementation details?', options:['Inheritance','Encapsulation','Polymorphism','Compilation'], correct:1, explain:'Encapsulation restricts direct access to internal state.'},
+      {q:'Inheritance primarily helps with:', options:['Code reuse between related classes','Deleting unused classes','Making code slower','Removing constructors'], correct:0, explain:'Child classes reuse and extend parent class behavior.'},
+      {q:'"is-a" relationship describes:', options:['Composition','Inheritance','A loop','An interface only'], correct:1, explain:'"A Car is a Vehicle" is a classic inheritance relationship.'},
+      {q:'Abstraction is about:', options:['Showing every implementation detail','Hiding complexity and exposing only what\'s necessary','Writing more code','Avoiding classes'], correct:1, explain:'Abstraction simplifies interaction by hiding unnecessary detail.'},
+    ],
+  },
+  'dsa|beginner':{
+    explanation:"Data Structures & Algorithms are the toolkit for organizing data and solving problems efficiently. At the start, focus on arrays, strings, and understanding time complexity (Big-O) at a conceptual level.",
+    scenario:"You're building a leaderboard for a mobile game with 10,000 players. Should you store scores in an unsorted list and scan it every time, or keep it sorted? What changes if a new score is added every second?",
+    code:'<span class="c">// Linear search - O(n)</span>\n<span class="k">int</span>[] scores = {45, 89, 12, 76};\n<span class="k">for</span> (<span class="k">int</span> s : scores) {\n  <span class="k">if</span> (s == 76) System.out.println(<span class="s">"Found!"</span>);\n}',
+    activity:"Given the array [45, 89, 12, 76, 3, 99], manually trace a linear search for 99 and count the comparisons. Then sort it mentally and think about how binary search would need far fewer comparisons.",
+    quiz:[
+      {q:'An array stores elements:', options:['In random unrelated memory locations','In contiguous memory with index-based access','Only as strings','In a tree shape'], correct:1, explain:'Arrays are contiguous, which is why index access is O(1).'},
+      {q:'O(n) time complexity roughly means:', options:['Time grows proportionally with input size','Time is always constant','Time grows exponentially','Time is unrelated to input'], correct:0, explain:'O(n) — linear time — scales directly with the number of elements.'},
+      {q:'Accessing arr[3] in an array takes:', options:['O(n)','O(log n)','O(1)','O(n^2)'], correct:2, explain:'Direct indexing is constant time.'},
+      {q:'Which is generally faster for search on a sorted array?', options:['Linear search','Binary search','Bubble sort','Random search'], correct:1, explain:'Binary search is O(log n) versus linear search\'s O(n).'},
+      {q:'A "string" data structure is essentially:', options:['A sequence of characters','A number','A boolean','A single character only'], correct:0, explain:'Strings are ordered sequences of characters.'},
+    ],
+  },
+  'dsa|intermediate':{
+    explanation:"Intermediate DSA covers stacks, queues, linked lists, trees, and sorting/searching algorithms — plus reasoning about which structure fits a given problem.",
+    scenario:"A browser's back button needs to remember visited pages in order and undo the most recent one first. Which structure — a queue or a stack — fits this naturally, and why?",
+    code:'<span class="c">// Stack via ArrayDeque</span>\nDeque<String> history = <span class="k">new</span> ArrayDeque<>();\nhistory.push(<span class="s">"home"</span>);\nhistory.push(<span class="s">"products"</span>);\nString back = history.pop(); <span class="c">// "products"</span>',
+    activity:"Design a queue-based simulation for a printer job queue: jobs are added at the back and printed from the front. Trace through adding 4 jobs and printing 2.",
+    quiz:[
+      {q:'A stack follows which principle?', options:['FIFO','LIFO','Random access','Sorted order'], correct:1, explain:'Stack = Last In, First Out.'},
+      {q:'A queue follows which principle?', options:['LIFO','FIFO','Binary search','Hashing'], correct:1, explain:'Queue = First In, First Out.'},
+      {q:'A binary search tree keeps elements:', options:['Unordered','Ordered so left < node < right','Only as leaves','In a stack'], correct:1, explain:'BST ordering enables efficient search/insert/delete.'},
+      {q:'Which sort has average time complexity O(n log n)?', options:['Bubble sort','Merge sort','Selection sort','Linear search'], correct:1, explain:'Merge sort (and quicksort on average) run in O(n log n).'},
+      {q:'A singly linked list node contains:', options:['Only data','Data and a reference to the next node','Two data fields','An index'], correct:1, explain:'Each node points to the next node, forming a chain.'},
+    ],
+  },
+  'sql|beginner':{
+    explanation:"SQL (Structured Query Language) lets you store, retrieve and manage data in relational databases using statements like SELECT, INSERT, UPDATE, and DELETE.",
+    scenario:"How does a bank manage millions of customer records reliably? Instead of one giant spreadsheet, it uses related tables — Customers, Accounts, Transactions — connected by keys, queried with SQL.",
+    code:'<span class="k">SELECT</span> name, balance\n<span class="k">FROM</span> accounts\n<span class="k">WHERE</span> balance > 10000\n<span class="k">ORDER BY</span> balance <span class="k">DESC</span>;',
+    activity:"Given a table 'students(id, name, marks)', write the SELECT statement to list students with marks greater than 80, sorted by marks descending.",
+    quiz:[
+      {q:'Which keyword filters rows based on a condition?', options:['ORDER BY','WHERE','GROUP BY','SELECT'], correct:1, explain:'WHERE filters rows before aggregation/ordering.'},
+      {q:'Which command adds a new row to a table?', options:['UPDATE','INSERT','DELETE','ALTER'], correct:1, explain:'INSERT INTO adds new rows.'},
+      {q:'A PRIMARY KEY must be:', options:['Duplicated often','Unique and not null for each row','Always text','Optional'], correct:1, explain:'Primary keys uniquely identify each row.'},
+      {q:'To sort results, you use:', options:['GROUP BY','ORDER BY','WHERE','HAVING'], correct:1, explain:'ORDER BY controls result ordering.'},
+      {q:'A foreign key is used to:', options:['Encrypt data','Link a row to a row in another table','Delete tables','Speed up typing'], correct:1, explain:'Foreign keys establish relationships between tables.'},
+    ],
+  },
+  'networks|beginner':{
+    explanation:"Computer Networks explain how devices communicate — from your phone requesting a webpage to servers routing that request across the globe in milliseconds.",
+    scenario:"How does your phone request data from a website? It resolves the domain via DNS, opens a TCP connection, sends an HTTP request, and the server sends back an HTTP response — all within a fraction of a second.",
+    code:'<span class="c">// Simplified request/response flow</span>\nGET /home HTTP/1.1\nHost: example.com\n\n<span class="c">// Server responds</span>\nHTTP/1.1 200 OK\nContent-Type: text/html',
+    activity:"Trace what happens, step by step, when you type a URL into your browser and press enter — from DNS lookup to the page rendering. Write it as a 5-step list.",
+    quiz:[
+      {q:'DNS is primarily responsible for:', options:['Encrypting traffic','Translating domain names into IP addresses','Compressing images','Storing cookies'], correct:1, explain:'DNS resolves human-readable names to IP addresses.'},
+      {q:'HTTP status code 404 means:', options:['Server error','Not found','Success','Redirect'], correct:1, explain:'404 indicates the requested resource wasn\'t found.'},
+      {q:'TCP is described as reliable because it:', options:['Never loses connection','Guarantees ordered delivery with acknowledgements','Is always faster than UDP','Uses no packets'], correct:1, explain:'TCP uses acknowledgements and retransmission for reliability.'},
+      {q:'A router\'s main job is to:', options:['Store web pages','Forward data packets between networks','Run applications','Render HTML'], correct:1, explain:'Routers direct packets toward their destination network.'},
+      {q:'HTTPS adds to HTTP:', options:['Faster speed only','Encryption via TLS/SSL','More cookies','Nothing'], correct:1, explain:'HTTPS layers TLS encryption over HTTP.'},
+    ],
+  },
+  'dbms|beginner':{
+    explanation:"A Database Management System organizes data into structured tables, enforces integrity rules, and lets multiple users query and update data safely and concurrently.",
+    scenario:"How does a bank manage millions of customer records without corrupting data when thousands of people transact at once? DBMS transactions (ACID properties) make sure each operation is all-or-nothing.",
+    code:'<span class="k">BEGIN TRANSACTION;</span>\n<span class="k">UPDATE</span> accounts <span class="k">SET</span> balance = balance - 500 <span class="k">WHERE</span> id=1;\n<span class="k">UPDATE</span> accounts <span class="k">SET</span> balance = balance + 500 <span class="k">WHERE</span> id=2;\n<span class="k">COMMIT;</span>',
+    activity:"Explain in your own words why the two UPDATE statements above must succeed or fail together (atomicity), using the bank transfer example.",
+    quiz:[
+      {q:'ACID stands in part for Atomicity, Consistency, Isolation and:', options:['Duration','Durability','Design','Distribution'], correct:1, explain:'Durability ensures committed data survives crashes.'},
+      {q:'Normalization is done to:', options:['Add duplicate data everywhere','Reduce data redundancy and improve integrity','Slow down queries','Delete all tables'], correct:1, explain:'Normalization organizes data to minimize redundancy.'},
+      {q:'A "transaction" in DBMS is:', options:['A single unbreakable unit of work','Any SQL comment','A type of index','A network packet'], correct:0, explain:'Transactions are executed as an all-or-nothing unit.'},
+      {q:'An index is used mainly to:', options:['Store backups','Speed up data retrieval','Encrypt tables','Delete rows faster'], correct:1, explain:'Indexes speed up lookups at the cost of extra storage/writes.'},
+      {q:'A relational database organizes data as:', options:['Tables with rows and columns','A single flat file','Only images','Random key-value blobs with no structure'], correct:0, explain:'Relational DBs use structured tables linked by keys.'},
+    ],
+  },
+};
+
+function genericLesson(skillName, levelLabel, branchName){
+  const seed = (skillName+levelLabel).length;
+  return {
+    explanation: "This "+levelLabel.toLowerCase()+" module builds your understanding of "+skillName+" step by step, moving from core ideas toward the kind of depth expected in "+branchName+" interviews and coursework.",
+    scenario: "Think about where "+skillName+" shows up in a real "+branchName+" project you might work on. Before reading further, try to describe — in your own words — one practical situation where "+skillName+" would matter.",
+    code: '<span class="c">// '+skillName+' — '+levelLabel+' notes</span>\n<span class="c">// Key idea 1: understand the core building blocks</span>\n<span class="c">// Key idea 2: connect it to a real '+branchName+' scenario</span>\n<span class="c">// Key idea 3: practice explaining it out loud</span>',
+    activity: "Write a short (3-4 sentence) explanation of the most important "+levelLabel.toLowerCase()+" concept in "+skillName+" as if you were teaching it to a junior student. This active-recall step builds lasting understanding.",
+    quiz: [1,2,3,4,5].map(i=>({
+      q:'('+levelLabel+') Which statement best reflects a core idea of '+skillName+' — question '+i+'?',
+      options:['A foundational, correct principle of '+skillName, 'An unrelated concept from a different field', 'A common misconception about '+skillName, 'An outdated approach no longer used'],
+      correct:0,
+      explain:'Option 1 reflects an accurate, foundational idea for '+skillName+' at the '+levelLabel.toLowerCase()+' stage.'
+    })),
+  };
+}
+
+function getLesson(skillId, levelKey){
+  const found = findSkill(skillId);
+  const skillName = found ? found.skill.name : skillId;
+  const branchName = found ? found.branch.name : '';
+  const levelLabel = (LEVELS.find(l=>l.key===levelKey)||{}).label || levelKey;
+  const key = skillId+'|'+levelKey;
+  if(CUSTOM_LESSONS[key]) return CUSTOM_LESSONS[key];
+  return genericLesson(skillName, levelLabel, branchName);
+}
+
+/* Mini-game bank: "Predict the Output" style, generic fallback included */
+const GAME_BANK = {
+  java:[
+    {code:'int x = 5;\nx = x + 3;\nSystem.out.println(x);', options:['5','8','53','Error'], correct:1},
+    {code:'String a = "Hi";\nString b = "Hi";\nSystem.out.println(a.equals(b));', options:['true','false','Error','Hi Hi'], correct:0},
+    {code:'int[] arr = {1,2,3};\nSystem.out.println(arr.length);', options:['2','3','4','Error'], correct:1},
+  ],
+  python:[
+    {code:'x = [1,2,3]\nx.append(4)\nprint(len(x))', options:['3','4','Error','None'], correct:1},
+    {code:'print(2 ** 3)', options:['6','8','9','Error'], correct:1},
+  ],
+  dsa:[
+    {code:'// Searching a sorted array of 1,000,000 items\n// Which is faster on average?', options:['Linear scan','Binary search','Bubble sort','Neither'], correct:1},
+  ],
+  sql:[
+    {code:'SELECT COUNT(*) FROM students WHERE marks > 80;', options:['Lists student names','Counts rows where marks > 80','Deletes rows','Updates marks'], correct:1},
+  ],
+};
+function getGameSet(skillId){
+  return GAME_BANK[skillId] || [
+    {code:'// Quick check for this topic\n// Which option reflects correct understanding?', options:['A solid, accurate idea', 'A common misconception', 'An unrelated fact', 'None of these'], correct:0},
+  ];
+}
+
+/* =========================================================================
+   INTERVIEW QUESTION BANKS
+========================================================================= */
+const INTERVIEW_BANK = {
+  java:{
+    beginner:[
+      {q:'What is the difference between a class and an object in Java?', keywords:['class','object','blueprint','instance'], skill:'java'},
+      {q:'What is the purpose of the main() method?', keywords:['entry','main','start','jvm'], skill:'java'},
+      {q:'What are the primitive data types in Java?', keywords:['int','double','boolean','char','primitive'], skill:'java'},
+    ],
+    intermediate:[
+      {q:'Can you explain polymorphism in Java with a real-world example?', keywords:['polymorphism','override','subclass','behavior'], skill:'java', followUp:{trigger:['override','inherit'], question:{q:'Good. Can you explain when you would prefer composition over inheritance?', keywords:['composition','has-a','flexible','coupling'], skill:'oop'}}},
+      {q:'What is the difference between an abstract class and an interface?', keywords:['abstract','interface','multiple inheritance','contract'], skill:'oop'},
+      {q:'How does exception handling work in Java?', keywords:['try','catch','exception','finally'], skill:'java'},
+    ],
+    advanced:[
+      {q:'You mentioned building a REST API using Spring Boot. How did you handle exception handling in that project?', keywords:['controlleradvice','exceptionhandler','custom exception','spring'], skill:'java'},
+      {q:'How would you design a thread-safe counter shared across multiple threads?', keywords:['synchronized','atomic','lock','thread'], skill:'java', followUp:{trigger:['synchronized','lock','atomic'],question:{q:'What trade-offs would you consider between using "synchronized" and an AtomicInteger?', keywords:['performance','contention','lock-free'], skill:'java'}}},
+      {q:'Walk me through how you would design a caching layer for a high-read API.', keywords:['cache','ttl','eviction','redis','latency'], skill:'sysdesign'},
+    ],
+  },
+  oop:{
+    beginner:[{q:'What are the four pillars of OOP?', keywords:['encapsulation','inheritance','polymorphism','abstraction'], skill:'oop'}],
+    intermediate:[{q:'How would you design a payment system using OOP principles?', keywords:['interface','payment','strategy','abstraction'], skill:'oop'}],
+    advanced:[{q:'When would you choose composition over inheritance in a large codebase?', keywords:['composition','coupling','flexibility'], skill:'oop'}],
+  },
+  sql:{
+    beginner:[{q:'What is the difference between WHERE and HAVING?', keywords:['where','having','group by','aggregate'], skill:'sql'}],
+    intermediate:[{q:'How would you optimize a slow-running SQL query on a large table?', keywords:['index','explain','query plan'], skill:'sql'}],
+    advanced:[{q:'How would you design a schema for a multi-tenant SaaS application?', keywords:['tenant','schema','isolation','partition'], skill:'sql'}],
+  },
+  dsa:{
+    beginner:[{q:'What is the time complexity of searching in a sorted array using binary search?', keywords:['o(log n)','logarithmic','binary search'], skill:'dsa'}],
+    intermediate:[{q:'When would you use a HashMap instead of a TreeMap?', keywords:['hashmap','treemap','o(1)','ordering'], skill:'dsa'}],
+    advanced:[{q:'How would you design a data structure for an LRU cache?', keywords:['lru','linkedhashmap','doubly linked list','eviction'], skill:'dsa'}],
+  },
+  dbms:{
+    beginner:[{q:'What are ACID properties in a database?', keywords:['atomicity','consistency','isolation','durability'], skill:'dbms'}],
+    intermediate:[{q:'What is database normalization and why is it useful?', keywords:['normalization','redundancy','1nf','3nf'], skill:'dbms'}],
+    advanced:[{q:'How would you design a database schema to handle millions of transactions per day?', keywords:['sharding','partition','index','scale'], skill:'dbms'}],
+  },
+  react:{
+    beginner:[{q:'What is the difference between props and state in React?', keywords:['props','state','component','immutable'], skill:'react'}],
+    intermediate:[{q:'When would you use useEffect and what are common pitfalls?', keywords:['useeffect','dependency array','cleanup'], skill:'react'}],
+    advanced:[{q:'How would you optimize a React app that re-renders too often?', keywords:['memo','usememo','usecallback','re-render'], skill:'react'}],
+  },
+  networks:{
+    beginner:[{q:'What happens between typing a URL and seeing the page load?', keywords:['dns','tcp','http','request'], skill:'networks'}],
+    intermediate:[{q:'What is the difference between TCP and UDP, and when would you use each?', keywords:['tcp','udp','reliable','latency'], skill:'networks'}],
+    advanced:[{q:'How would you design a low-latency communication system for a multiplayer game?', keywords:['udp','latency','protocol'], skill:'networks'}],
+  },
+  general:{
+    beginner:[
+      {q:'Tell me about a project you have worked on and your specific role in it.', keywords:['project','role','contribution'], skill:'communication'},
+      {q:'How do you approach learning a new technology?', keywords:['learn','practice','documentation'], skill:'communication'},
+    ],
+    intermediate:[
+      {q:'Describe a challenging bug you fixed. What was your debugging process?', keywords:['bug','debug','root cause','process'], skill:'communication'},
+    ],
+    advanced:[
+      {q:'How would you approach designing a system you have never built before, under time pressure?', keywords:['plan','trade-off','mvp','architecture'], skill:'sysdesign'},
+    ],
+  },
+};
+function getInterviewQuestions(skillIds, level, count){
+  let pool = [];
+  skillIds.forEach(id=>{
+    const bank = INTERVIEW_BANK[id];
+    if(bank){
+      const lvl = bank[level] || bank.beginner || [];
+      pool = pool.concat(lvl);
+    }
+  });
+  if(pool.length===0){ pool = INTERVIEW_BANK.general[level] || INTERVIEW_BANK.general.beginner; }
+  // pad using general questions if not enough
+  const general = INTERVIEW_BANK.general[level] || INTERVIEW_BANK.general.beginner;
+  let i=0;
+  while(pool.length < count && i < general.length*3){ pool.push(general[i % general.length]); i++; }
+  // shuffle lightly then slice
+  const shuffled = pool.slice().sort(()=>Math.random()-0.5);
+  return shuffled.slice(0, count);
+}
+
+/* Mock test bank (10 quick MCQs), generic + skill-based */
+const MOCKTEST_BANK = [
+  {q:'What does OOP stand for?', options:['Object Oriented Programming','Only One Path','Open Operating Protocol','Ordered Object Pattern'], correct:0, skill:'oop'},
+  {q:'Which SQL clause filters grouped results?', options:['WHERE','HAVING','ORDER BY','LIMIT'], correct:1, skill:'sql'},
+  {q:'Big-O of binary search on a sorted array is:', options:['O(n)','O(log n)','O(n^2)','O(1)'], correct:1, skill:'dsa'},
+  {q:'HTTP status 200 means:', options:['Not Found','Server Error','Success','Redirect'], correct:2, skill:'networks'},
+  {q:'A primary key must be:', options:['Duplicated','Unique per row','Always numeric','Optional'], correct:1, skill:'dbms'},
+  {q:'Java\'s "this" keyword refers to:', options:['The parent class','The current object','A static method','A package'], correct:1, skill:'java'},
+  {q:'Which is NOT a pillar of OOP?', options:['Encapsulation','Polymorphism','Compilation','Inheritance'], correct:2, skill:'oop'},
+  {q:'A stack data structure follows:', options:['FIFO','LIFO','Random order','Sorted order'], correct:1, skill:'dsa'},
+  {q:'React "props" are:', options:['Mutable internal state','Read-only inputs passed to a component','CSS classes','Server routes'], correct:1, skill:'react'},
+  {q:'TCP is considered reliable because it:', options:['Never drops packets physically','Uses acknowledgements & retransmission','Is always encrypted','Has no headers'], correct:1, skill:'networks'},
+];
+
+/* =========================================================================
+   MOCK "AI" SERVICE LAYER (clearly-labelled demo logic — swap with real APIs)
+========================================================================= */
+const AIServices = {
+  parseResume(text){
+    // Demo keyword-based extraction (replace with a real resume-parsing API)
+    const knownSkills = ['java','python','sql','react','javascript','node','spring','aws','docker','html','css','dsa','oop','dbms','c++','typescript'];
+    const lower = (text||'').toLowerCase();
+    const found = knownSkills.filter(s=> lower.includes(s));
+    return {
+      skills: found.length? found : ['java','sql','react'],
+      projects: ['E-commerce Application','Student Management System'],
+      education: 'B.Tech, Computer Science',
+    };
+  },
+  parseJD(text){
+    const knownSkills = ['java','spring','sql','aws','docker','python','react','kubernetes','node'];
+    const lower = (text||'').toLowerCase();
+    const found = knownSkills.filter(s=> lower.includes(s));
+    return {
+      required: found.length? found.slice(0,3) : ['java','spring','sql'],
+      preferred: found.length>3? found.slice(3) : ['aws','docker'],
+    };
+  },
+  evaluateAnswer(question, transcript){
+    // Demo heuristic scoring (replace with a real LLM evaluation call)
+    const words = (transcript||'').trim().split(/\s+/).filter(Boolean);
+    const lower = (transcript||'').toLowerCase();
+    let kwHits = 0;
+    (question.keywords||[]).forEach(k=>{ if(lower.includes(k)) kwHits++; });
+    const kwRatio = (question.keywords||[]).length? kwHits/(question.keywords.length) : 0.5;
+    const lengthScore = Math.min(1, words.length/45);
+    const base = 0.35*kwRatio + 0.45*lengthScore + 0.20*Math.random()*0.6+0.2;
+    const clamp = v=>Math.max(3, Math.min(10, Math.round(v*10)));
+    const technical = clamp(base + kwRatio*0.3);
+    const relevance = clamp(base + kwRatio*0.2);
+    const communication = clamp(0.5 + lengthScore*0.4 + Math.random()*0.15);
+    const confidence = clamp(0.5 + lengthScore*0.3 + Math.random()*0.2);
+    const completeness = clamp(base*0.9 + lengthScore*0.2);
+    const clarity = clamp(0.5 + Math.random()*0.3 + lengthScore*0.2);
+    const overall = Math.round((technical+relevance+communication+confidence+completeness+clarity)/6*10)/10;
+    let tip;
+    if(words.length < 12){ tip = "Try to expand your answer with a concrete example — short answers are harder to fully evaluate."; }
+    else if(kwRatio < 0.3){ tip = "Good structure. Try to explicitly mention the core concept the question is testing for a stronger score."; }
+    else { tip = "Solid explanation — adding one real-world example would make it even stronger."; }
+    return {technical, relevance, communication, confidence, completeness, clarity, overall, tip};
+  },
+};
+
+/* =========================================================================
+   STATE (kept in-memory for this session — no browser storage used)
+========================================================================= */
+const state = {
+  route:'home',
+  routeParams:{},
+  user:{name:'Ananya Rao', role:'B.Tech CSE, 3rd Year'},
+  xp:1240, streak:6,
+  badges:['5-Day Streak','Java Novice','First Interview'],
+  learningProgress:{ java:76, oop:88, dsa:55, sql:78, python:40, networks:30, dbms:60 },
+  lastLesson:{skillId:'java', levelKey:'intermediate'},
+  interviewHistory:[
+    {date:'Sep 2', mode:'skill', level:'intermediate', overall:61, categories:{technical:64,communication:58,confidence:55,relevance:66,problemSolving:60}},
+  ],
+  camera:{granted:false, stream:null},
+  interviewSession:null, // built when an interview starts
+};
+
+function addXP(n){ state.xp += n; }
+
+/* =========================================================================
+   ROUTER + RENDER
+========================================================================= */
+function navigate(route, params){
+  state.route = route; state.routeParams = params||{};
+  window.scrollTo(0,0);
+  render();
+}
+function go(route, params){ return "App.navigate('"+route+"', "+ (params? JSON.stringify(params).replace(/"/g,'&quot;') : 'null') +")"; }
+// simpler: expose navigate via window.App
+
+function levelIndex(key){ return LEVELS.findIndex(l=>l.key===key); }
+
+function NAV_ITEMS(){
+  return [
+    {route:'home', label:'Home', icon:'home'},
+    {route:'learning', label:'Learning', icon:'learn'},
+    {route:'practice', label:'Practice', icon:'practice'},
+    {route:'interview', label:'Mock Interview', icon:'interview'},
+    {route:'progress', label:'Progress', icon:'progress'},
+    {route:'about', label:'About', icon:'about'},
+  ];
+}
+
+function renderShell(innerHTML, opts){
+  opts = opts||{};
+  const items = NAV_ITEMS();
+  const topActive = items.find(i=>i.route===state.route);
+  const sideLinks = items.map(it=>
+    '<button class="nav-link '+(state.route===it.route?'active':'')+'" onclick="App.navigate(\''+it.route+'\')">'+Icon(it.icon,'ic')+'<span>'+it.label+'</span></button>'
+  ).join('');
+  const bottomLinks = items.filter(i=>i.route!=='about').map(it=>
+    '<a href="javascript:void(0)" class="'+(state.route===it.route?'active':'')+'" onclick="App.navigate(\''+it.route+'\')">'+Icon(it.icon,'ic')+'<span>'+it.label+'</span></a>'
+  ).join('');
+
+  return (
+    '<div class="shell">'+
+      '<aside class="side-nav" aria-label="Main navigation">'+
+        '<div class="brand"><div class="brand-mark">A</div><div class="brand-name">Ascend</div></div>'+
+        '<nav>'+sideLinks+'</nav>'+
+        '<div class="spacer"></div>'+
+        '<div class="side-foot">'+
+          '<div class="profile-mini"><div class="profile-avatar">'+state.user.name.split(' ').map(w=>w[0]).join('').slice(0,2)+'</div><div><div class="pn">'+state.user.name+'</div><div class="pr">'+state.user.role+'</div></div></div>'+
+        '</div>'+
+      '</aside>'+
+      '<div class="main-col">'+
+        '<header class="topbar">'+
+          '<div class="topbar-title">'+ (opts.title || (topActive?topActive.label:'')) +'</div>'+
+          '<div class="topbar-right">'+
+            '<div class="streak-chip">'+Icon('flame','ic')+' '+state.streak+' day streak</div>'+
+            '<div class="xp-chip">'+Icon('bolt','ic')+' '+state.xp+' XP</div>'+
+          '</div>'+
+        '</header>'+
+        '<main class="content" id="content-root">'+innerHTML+'</main>'+
+      '</div>'+
+    '</div>'+
+    '<nav class="bottom-nav" aria-label="Mobile navigation">'+bottomLinks+'</nav>'
+  );
+}
+
+function render(){
+  const root = document.getElementById('app');
+  let inner = '';
+  let opts = {};
+  switch(state.route){
+    case 'home': inner = viewHome(); break;
+    case 'learning': inner = viewLearningBranches(); break;
+    case 'branch': inner = viewBranchSkills(state.routeParams.branchId); break;
+    case 'skill': inner = viewSkillLevels(state.routeParams.skillId); break;
+    case 'lesson': inner = viewLesson(state.routeParams.skillId, state.routeParams.levelKey); break;
+    case 'practice': inner = viewPractice(); break;
+    case 'interview': inner = viewInterviewHome(); break;
+    case 'interview-setup': inner = viewInterviewSetup(state.routeParams.mode); break;
+    case 'interview-level': inner = viewInterviewLevel(); break;
+    case 'interview-prep': inner = viewPreparation(); break;
+    case 'interview-mocktest': inner = viewMockTest(); break;
+    case 'interview-session': inner = viewInterviewSession(); break;
+    case 'interview-results': inner = viewInterviewResults(); break;
+    case 'progress': inner = viewProgressDashboard(); break;
+    case 'about': inner = viewAbout(); break;
+    default: inner = viewHome();
+  }
+  root.innerHTML = renderShell(inner, opts);
+  afterRender();
+}
+
+function afterRender(){
+  // Hooks that need DOM after paint (e.g., mastery ring canvases) - implemented via inline SVG so nothing needed here currently.
+  if(state.route==='interview-session'){ initInterviewSessionDOM(); }
+}
+
+/* =========================================================================
+   VIEW: HOME
+========================================================================= */
+function ring(pct, color, size, label){
+  size = size||104;
+  const r = size/2 - 8;
+  const c = 2*Math.PI*r;
+  const off = c - (pct/100)*c;
+  return '<div class="mastery-ring" style="width:'+size+'px;height:'+size+'px;">'+
+    '<svg viewBox="0 0 '+size+' '+size+'"><circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="var(--line)" stroke-width="8"/>'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="8" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" transform="rotate(-90 '+size/2+' '+size/2+')"/></svg>'+
+    '<div class="num">'+pct+'%</div>'+
+  '</div>'+(label?'<div class="small muted" style="text-align:center;margin-top:6px;">'+label+'</div>':'');
+}
+
+function viewHome(){
+  const lastSkill = findSkill(state.lastLesson.skillId);
+  const recommended = BRANCHES[0].skills.filter(s=>['python','networks','sysdesign'].includes(s.id));
+  const lastInterview = state.interviewHistory[state.interviewHistory.length-1];
+  const readiness = Math.round((state.learningProgress.java*0.3+state.learningProgress.dsa*0.3+state.learningProgress.oop*0.2+state.learningProgress.sql*0.2));
+
+  return (
+  '<section class="hero">'+
+    '<h1>Prepare smarter.<br/>Perform better.</h1>'+
+    '<p class="lead">Learn industry skills, practice real questions, and experience realistic AI-powered interviews — all in one connected journey.</p>'+
+    '<div class="actions">'+
+      '<button class="btn btn-amber" onclick="App.navigate(\'learning\')">Start Learning</button>'+
+      '<button class="btn btn-secondary" style="background:transparent;border-color:rgba(255,255,255,0.35);color:#fff;" onclick="App.navigate(\'interview\')">Start Mock Interview</button>'+
+    '</div>'+
+    '<div class="stats">'+
+      '<div class="stat"><b>'+readiness+'%</b><span>Interview Readiness</span></div>'+
+      '<div class="stat"><b>'+state.streak+' days</b><span>Learning Streak</span></div>'+
+      '<div class="stat"><b>'+lastInterview.overall+'/100</b><span>Last Interview Score</span></div>'+
+    '</div>'+
+  '</section>'+
+
+  '<div class="section">'+
+    '<div class="section-head"><h2>Continue learning</h2><a href="javascript:void(0)" class="btn btn-ghost btn-sm" onclick="App.navigate(\'learning\')">Browse all</a></div>'+
+    '<div class="card card-hover quick-tile" onclick="App.navigate(\'lesson\',{skillId:\''+lastSkill.skill.id+'\',levelKey:\''+state.lastLesson.levelKey+'\'})">'+
+      '<div class="icon-box" style="background:var(--primary-tint);color:var(--primary);font-family:\'Space Grotesk\';font-weight:700;">'+lastSkill.skill.name.slice(0,2).toUpperCase()+'</div>'+
+      '<div><div style="font-weight:600;">'+lastSkill.skill.name+' · '+(LEVELS.find(l=>l.key===state.lastLesson.levelKey).label)+'</div><div class="small muted">'+lastSkill.branch.name+' · '+state.learningProgress[lastSkill.skill.id]+'% mastered — pick up where you left off</div></div>'+
+      '<div class="arrow">'+Icon('arrow')+'</div>'+
+    '</div>'+
+  '</div>'+
+
+  '<div class="grid grid-2 section">'+
+    '<div class="card card-pad">'+
+      '<div class="row between" style="margin-bottom:14px;"><h2 style="font-size:17px;">Recommended skills</h2></div>'+
+      recommended.map(s=>
+        '<div class="row between" style="padding:10px 0;border-top:1px solid var(--line);" >'+
+          '<div><div style="font-weight:600;font-size:14.5px;">'+s.name+'</div><div class="small muted">'+s.cat+'</div></div>'+
+          '<button class="btn btn-secondary btn-sm" onclick="App.navigate(\'skill\',{skillId:\''+s.id+'\'})">Learn</button>'+
+        '</div>'
+      ).join('')+
+    '</div>'+
+    '<div class="card card-pad">'+
+      '<div class="row between" style="margin-bottom:10px;"><h2 style="font-size:17px;">Recent interview score</h2><span class="chip chip-primary">'+lastInterview.level+'</span></div>'+
+      '<div class="row gap-16">'+
+        ring(lastInterview.overall, 'var(--primary)', 96)+
+        '<div style="flex:1;">'+
+          Object.keys(lastInterview.categories).map(k=>
+            '<div style="margin-bottom:8px;"><div class="row between small" style="margin-bottom:4px;"><span class="muted">'+catLabel(k)+'</span><span style="font-weight:600;">'+lastInterview.categories[k]+'%</span></div><div class="progress-track"><div class="progress-fill" style="width:'+lastInterview.categories[k]+'%"></div></div></div>'
+          ).join('')+
+        '</div>'+
+      '</div>'+
+      '<button class="btn btn-primary btn-block" style="margin-top:12px;" onclick="App.navigate(\'interview\')">Interview again</button>'+
+    '</div>'+
+  '</div>'+
+
+  '<div class="grid grid-3 section">'+
+    '<div class="card card-pad" style="grid-column:span 1;">'+
+      '<div class="row gap-10" style="margin-bottom:8px;"><div class="icon-box" style="background:var(--amber-tint);color:#9C6A11;">'+Icon('flame')+'</div><h2 style="font-size:16px;">Learning streak</h2></div>'+
+      '<p class="small">You have studied '+state.streak+' days in a row. Keep it going today!</p>'+
+      '<div class="row gap-8" style="margin-top:12px;">'+ [1,2,3,4,5,6,7].map(d=> '<div class="badge-dot" style="width:26px;height:26px;border-radius:8px;background:'+(d<=state.streak?'var(--amber)':'var(--line)')+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">'+(d<=state.streak?Icon('check','ic'):'')+'</div>').join('') +'</div>'+
+    '</div>'+
+    '<div class="card card-pad">'+
+      '<div class="row gap-10" style="margin-bottom:8px;"><div class="icon-box" style="background:var(--teal-tint);color:#0E6E5C;">'+Icon('badge')+'</div><h2 style="font-size:16px;">Badges earned</h2></div>'+
+      '<div class="row wrap gap-8">'+ state.badges.map(b=>'<span class="chip chip-teal">'+b+'</span>').join('') +'</div>'+
+    '</div>'+
+    '<div class="card card-pad">'+
+      '<div class="row gap-10" style="margin-bottom:8px;"><div class="icon-box" style="background:var(--primary-tint);color:var(--primary);">'+Icon('bolt')+'</div><h2 style="font-size:16px;">Quick practice</h2></div>'+
+      '<p class="small" style="margin-bottom:12px;">A fast 5-question challenge to keep your memory sharp.</p>'+
+      '<button class="btn btn-primary btn-block btn-sm" onclick="App.navigate(\'practice\')">Start quick practice</button>'+
+    '</div>'+
+  '</div>'
+  );
+}
+function catLabel(k){
+  return {technical:'Technical', communication:'Communication', confidence:'Confidence', relevance:'Relevance', problemSolving:'Problem Solving'}[k] || k;
+}
+
+/* =========================================================================
+   VIEW: LEARNING — BRANCHES
+========================================================================= */
+function viewLearningBranches(){
+  return (
+    '<div class="section-head"><div><h2 style="font-size:22px;">Choose your branch</h2><p class="small">Pick an engineering branch, then a skill, and learn from basics to advanced.</p></div></div>'+
+    '<div class="grid grid-3">'+
+    BRANCHES.map(b=>{
+      const avgProg = Math.round(b.skills.reduce((a,s)=>a+(state.learningProgress[s.id]||0),0)/b.skills.length);
+      return '<div class="card branch-card card-hover" onclick="App.navigate(\'branch\',{branchId:\''+b.id+'\'})">'+
+        '<div class="top"><div class="icon-box" style="background:'+b.color+'22;color:'+b.color+';font-family:\'Space Grotesk\';font-weight:700;">'+b.name.slice(0,2).toUpperCase()+'</div>'+
+        '<div><h3 style="font-size:16px;">'+b.name+'</h3><p class="small">'+b.tagline+'</p></div></div>'+
+        '<div class="skill-tags">'+ b.skills.slice(0,4).map(s=>'<span class="chip chip-outline">'+s.name+'</span>').join('') + (b.skills.length>4?'<span class="chip chip-outline">+'+(b.skills.length-4)+'</span>':'') +'</div>'+
+        '<div class="row between"><div class="progress-track" style="max-width:140px;"><div class="progress-fill" style="width:'+avgProg+'%"></div></div><span class="row gap-8 small muted">'+b.skills.length+' skills <span class="arrow">'+Icon('arrow')+'</span></span></div>'+
+      '</div>';
+    }).join('')+
+    '</div>'
+  );
+}
+
+/* =========================================================================
+   VIEW: BRANCH -> SKILLS LIST
+========================================================================= */
+function viewBranchSkills(branchId){
+  const b = findBranch(branchId);
+  if(!b) return viewLearningBranches();
+  const cats = [...new Set(b.skills.map(s=>s.cat))];
+  return (
+    '<div class="crumbs"><a href="javascript:void(0)" onclick="App.navigate(\'learning\')">Learning</a><span class="sep">/</span><span>'+b.name+'</span></div>'+
+    '<div class="section-head"><div><h2 style="font-size:22px;">'+b.name+'</h2><p class="small">'+b.tagline+'</p></div></div>'+
+    cats.map(cat=>
+      '<div class="section"><h3 style="font-size:14px;color:var(--muted);margin-bottom:10px;">'+cat+'</h3><div class="grid grid-2">'+
+      b.skills.filter(s=>s.cat===cat).map(s=>{
+        const prog = state.learningProgress[s.id]||0;
+        return '<div class="card skill-row" onclick="App.navigate(\'skill\',{skillId:\''+s.id+'\'})">'+
+          '<div class="swatch" style="background:'+b.color+';">'+s.name.slice(0,2).toUpperCase()+'</div>'+
+          '<div class="meta"><div style="font-weight:600;font-size:14.5px;">'+s.name+'</div><div class="progress-track" style="margin-top:6px;"><div class="progress-fill" style="width:'+prog+'%"></div></div></div>'+
+          '<div class="prog-num" style="color:'+b.color+';">'+prog+'%</div>'+
+        '</div>';
+      }).join('')+
+      '</div></div>'
+    ).join('')
+  );
+}
+
+/* =========================================================================
+   VIEW: SKILL -> LEVELS
+========================================================================= */
+function viewSkillLevels(skillId){
+  const found = findSkill(skillId);
+  if(!found) return viewLearningBranches();
+  const {skill, branch} = found;
+  const prog = state.learningProgress[skillId]||0;
+  // derive which level index is "current" from overall prog
+  const currentIdx = Math.min(LEVELS.length-1, Math.floor(prog/20));
+  return (
+    '<div class="crumbs"><a href="javascript:void(0)" onclick="App.navigate(\'learning\')">Learning</a><span class="sep">/</span><a href="javascript:void(0)" onclick="App.navigate(\'branch\',{branchId:\''+branch.id+'\'})">'+branch.name+'</a><span class="sep">/</span><span>'+skill.name+'</span></div>'+
+    '<div class="grid split-2-1 section" style="gap:22px;align-items:start;">'+
+      '<div class="card card-pad">'+
+        '<h2 style="font-size:22px;margin-bottom:4px;">'+skill.name+'</h2><p class="small" style="margin-bottom:20px;">'+skill.cat+' · '+branch.name+'</p>'+
+        '<div class="level-track">'+
+        LEVELS.map((l,i)=>{
+          const done = i<currentIdx; const current = i===currentIdx;
+          return '<div class="level-item" onclick="App.navigate(\'lesson\',{skillId:\''+skillId+'\',levelKey:\''+l.key+'\'})">'+
+            '<div class="dot-col"><div class="dot '+(done?'done':current?'current':'')+'">'+(done?Icon('check','ic'):i+1)+'</div>'+ (i<LEVELS.length-1?'<div class="line '+(done?'done':'')+'"></div>':'') +'</div>'+
+            '<div class="body"><h4 style="font-size:15px;">'+l.label+'</h4><p class="small">'+levelBlurb(l.key)+'</p></div>'+
+          '</div>';
+        }).join('')+
+        '</div>'+
+      '</div>'+
+      '<div class="card card-pad" style="text-align:center;">'+
+        ring(prog, 'var(--teal)', 120, 'Overall mastery')+
+        '<button class="btn btn-primary btn-block" style="margin-top:18px;" onclick="App.navigate(\'lesson\',{skillId:\''+skillId+'\',levelKey:\''+LEVELS[currentIdx].key+'\'})">Continue: '+LEVELS[currentIdx].label+'</button>'+
+      '</div>'+
+    '</div>'
+  );
+}
+function levelBlurb(key){
+  return {
+    beginner:'Syntax, core building blocks and simple examples.',
+    fundamentals:'The essential concepts every learner needs solid.',
+    intermediate:'Deeper mechanics, common patterns and trade-offs.',
+    advanced:'Performance, architecture and expert-level nuance.',
+    interviewready:'Interview questions, scenarios and real cases.',
+  }[key] || '';
+}
+
+/* =========================================================================
+   VIEW: LESSON (explanation, example, code, activity, quiz, game, mastery)
+========================================================================= */
+let lessonQuizState = {}; // per-render ephemeral
+let lessonGameState = {};
+
+function viewLesson(skillId, levelKey){
+  const found = findSkill(skillId);
+  if(!found) return viewLearningBranches();
+  const {skill, branch} = found;
+  const level = LEVELS.find(l=>l.key===levelKey) || LEVELS[0];
+  const lesson = getLesson(skillId, levelKey);
+  state.lastLesson = {skillId, levelKey};
+
+  if(!lessonQuizState.key || lessonQuizState.key !== skillId+levelKey){
+    lessonQuizState = {key:skillId+levelKey, answers:{}, submitted:false};
+  }
+
+  return (
+    '<div class="crumbs"><a href="javascript:void(0)" onclick="App.navigate(\'learning\')">Learning</a><span class="sep">/</span><a href="javascript:void(0)" onclick="App.navigate(\'branch\',{branchId:\''+branch.id+'\'})">'+branch.name+'</a><span class="sep">/</span><a href="javascript:void(0)" onclick="App.navigate(\'skill\',{skillId:\''+skillId+'\'})">'+skill.name+'</a><span class="sep">/</span><span>'+level.label+'</span></div>'+
+    '<div class="lesson-nav">'+
+      LEVELS.map(l=>'<button class="lesson-tab '+(l.key===levelKey?'active':'')+'" onclick="App.navigate(\'lesson\',{skillId:\''+skillId+'\',levelKey:\''+l.key+'\'})">'+l.label+'</button>').join('')+
+    '</div>'+
+    '<h2 style="font-size:24px;margin-bottom:18px;">'+skill.name+' — '+level.label+'</h2>'+
+
+    '<div class="lesson-block"><h3>'+Icon('learn','ic')+' Explanation</h3><div class="card card-pad"><p>'+lesson.explanation+'</p></div></div>'+
+
+    '<div class="lesson-block"><h3>'+Icon('bolt','ic')+' Real-world scenario</h3><div class="scenario-box">'+lesson.scenario+'</div></div>'+
+
+    '<div class="lesson-block"><h3>'+Icon('practice','ic')+' Example</h3><div class="code-box"><pre style="margin:0;white-space:pre-wrap;">'+lesson.code+'</pre></div></div>'+
+
+    '<div class="lesson-block"><h3>'+Icon('check','ic')+' Interactive activity</h3><div class="activity-box"><p>'+lesson.activity+'</p></div></div>'+
+
+    '<div class="lesson-block"><h3>'+Icon('progress','ic')+' Mini quiz</h3><div id="quiz-area">'+renderQuiz(lesson.quiz)+'</div></div>'+
+
+    '<div class="lesson-block"><h3>'+Icon('interview','ic')+' Quick challenge</h3><div id="game-area">'+renderGame(skillId)+'</div></div>'+
+
+    '<div class="card card-pad row between" style="margin-top:8px;">'+
+      '<div><div style="font-weight:600;">Mastery for this skill</div><div class="small muted">Complete the quiz above to update it.</div></div>'+
+      ring(state.learningProgress[skillId]||0, 'var(--teal)', 74)+
+    '</div>'
+  );
+}
+
+function renderQuiz(questions){
+  const qs = lessonQuizState;
+  const submitted = qs.submitted;
+  let correctCount = 0;
+  if(submitted){
+    questions.forEach((q,i)=>{ if(qs.answers[i]===q.correct) correctCount++; });
+  }
+  return questions.map((q,i)=>{
+    const chosen = qs.answers[i];
+    return '<div class="card quiz-q">'+
+      '<div style="font-weight:600;margin-bottom:2px;">'+(i+1)+'. '+q.q+'</div>'+
+      q.options.map((opt,oi)=>{
+        let cls='quiz-opt'+(submitted?' disabled':'');
+        if(submitted){
+          if(oi===q.correct) cls+=' correct';
+          else if(oi===chosen) cls+=' incorrect';
+        } else if(chosen===oi){ cls+=' selected'; }
+        return '<div class="'+cls+'" onclick="'+(submitted?'':'App.selectQuizAnswer('+i+','+oi+')')+'"><span class="opt-letter">'+String.fromCharCode(65+oi)+'</span><span>'+opt+'</span></div>';
+      }).join('')+
+      (submitted? '<div class="small muted" style="margin-top:8px;">'+q.explain+'</div>':'')+
+    '</div>';
+  }).join('') +
+  (!submitted?
+    '<button class="btn btn-primary" onclick="App.submitQuiz()" '+(Object.keys(qs.answers).length<questions.length?'disabled':'')+'>Submit quiz ('+Object.keys(qs.answers).length+'/'+questions.length+' answered)</button>'
+    :
+    '<div class="card card-pad" style="margin-top:6px;">'+
+      '<div class="row between"><div><div style="font-weight:700;font-size:17px;">Score: '+correctCount+'/'+questions.length+'</div><div class="small muted">+'+(correctCount*10)+' XP earned</div></div>'+
+      '<button class="btn btn-secondary btn-sm" onclick="App.retryQuiz()">Retry quiz</button></div>'+
+      '<div class="progress-track" style="margin-top:12px;"><div class="progress-fill teal" style="width:'+Math.round(correctCount/questions.length*100)+'%"></div></div>'+
+    '</div>'
+  );
+}
+
+function renderGame(skillId){
+  const set = getGameSet(skillId);
+  if(!lessonGameState.key || lessonGameState.key!==skillId){
+    lessonGameState = {key:skillId, idx:0, score:0, answered:false, chosen:null};
+  }
+  const gs = lessonGameState;
+  if(gs.idx >= set.length){
+    return '<div class="card card-pad" style="text-align:center;">'+
+      '<div style="font-weight:700;font-size:17px;">Challenge complete — '+gs.score+'/'+set.length+' correct 🎉</div>'+
+      '<button class="btn btn-primary btn-sm" style="margin-top:10px;" onclick="App.restartGame(\''+skillId+'\')">Play again</button>'+
+    '</div>';
+  }
+  const item = set[gs.idx];
+  return '<div class="card card-pad">'+
+    '<div class="small muted" style="margin-bottom:8px;">Predict the output — question '+(gs.idx+1)+' of '+set.length+'</div>'+
+    '<div class="code-box" style="margin-bottom:14px;"><pre style="margin:0;white-space:pre-wrap;">'+item.code+'</pre></div>'+
+    '<div class="grid grid-2">'+
+      item.options.map((o,oi)=>{
+        let cls='quiz-opt'+(gs.answered?' disabled':'');
+        if(gs.answered){ if(oi===item.correct) cls+=' correct'; else if(oi===gs.chosen) cls+=' incorrect'; }
+        return '<div class="'+cls+'" onclick="'+(gs.answered?'':'App.answerGame('+oi+')')+'"><span class="opt-letter">'+String.fromCharCode(65+oi)+'</span><span>'+o+'</span></div>';
+      }).join('')+
+    '</div>'+
+    (gs.answered? '<button class="btn btn-primary btn-sm" style="margin-top:14px;" onclick="App.nextGame()">Next</button>' : '')+
+  '</div>';
+}
+
+/* =========================================================================
+   VIEW: PRACTICE (quick 5-question mixed challenge)
+========================================================================= */
+let practiceState = {answers:{}, submitted:false};
+function viewPractice(){
+  const qs = MOCKTEST_BANK.slice(0,5);
+  return (
+    '<h2 style="font-size:22px;margin-bottom:6px;">Quick practice</h2>'+
+    '<p class="small" style="margin-bottom:18px;">A fast mixed round across your recent topics.</p>'+
+    '<div id="practice-area">'+renderPracticeQuiz(qs)+'</div>'
+  );
+}
+function renderPracticeQuiz(qs){
+  const p = practiceState;
+  let correct=0;
+  if(p.submitted) qs.forEach((q,i)=>{ if(p.answers[i]===q.correct) correct++; });
+  return qs.map((q,i)=>{
+    const chosen=p.answers[i];
+    return '<div class="card quiz-q"><div style="font-weight:600;margin-bottom:2px;">'+(i+1)+'. '+q.q+'</div>'+
+      q.options.map((opt,oi)=>{
+        let cls='quiz-opt'+(p.submitted?' disabled':'');
+        if(p.submitted){ if(oi===q.correct) cls+=' correct'; else if(oi===chosen) cls+=' incorrect'; } else if(chosen===oi) cls+=' selected';
+        return '<div class="'+cls+'" onclick="'+(p.submitted?'':'App.selectPracticeAnswer('+i+','+oi+')')+'"><span class="opt-letter">'+String.fromCharCode(65+oi)+'</span><span>'+opt+'</span></div>';
+      }).join('')+
+    '</div>';
+  }).join('')+
+  (!p.submitted?
+    '<button class="btn btn-primary" onclick="App.submitPractice()">Submit</button>'
+    :
+    '<div class="card card-pad"><div style="font-weight:700;font-size:17px;">Score: '+correct+'/'+qs.length+'</div>'+
+     '<button class="btn btn-secondary btn-sm" style="margin-top:10px;" onclick="App.restartPractice()">Try another round</button></div>'
+  );
+}
+
+/* =========================================================================
+   VIEW: INTERVIEW HOME (mode selection)
+========================================================================= */
+function viewInterviewHome(){
+  return (
+    '<h2 style="font-size:22px;margin-bottom:6px;">Start a mock interview</h2>'+
+    '<p class="small" style="margin-bottom:20px;">Choose how you would like the AI to build your interview.</p>'+
+    '<div class="grid grid-3">'+
+      '<div class="card mode-card" onclick="App.startInterviewSetup(\'resume\')">'+
+        '<div class="icon-box" style="background:var(--primary-tint);color:var(--primary);">'+Icon('upload')+'</div>'+
+        '<h3 style="font-size:17px;">Resume-based interview</h3><p class="small">Upload your resume — the AI reads your skills, projects and experience to personalize every question.</p>'+
+        '<span class="go">Start →</span>'+
+      '</div>'+
+      '<div class="card mode-card" onclick="App.startInterviewSetup(\'jd\')">'+
+        '<div class="icon-box" style="background:var(--amber-tint);color:#9C6A11;">'+Icon('interview')+'</div>'+
+        '<h3 style="font-size:17px;">Job description-based</h3><p class="small">Paste a job description — get questions tailored to that exact role, plus a resume-match check.</p>'+
+        '<span class="go">Start →</span>'+
+      '</div>'+
+      '<div class="card mode-card" onclick="App.startInterviewSetup(\'skills\')">'+
+        '<div class="icon-box" style="background:var(--teal-tint);color:#0E6E5C;">'+Icon('bolt')+'</div>'+
+        '<h3 style="font-size:17px;">Skill-based interview</h3><p class="small">Pick the exact skills, difficulty and question count — full control over your practice session.</p>'+
+        '<span class="go">Start →</span>'+
+      '</div>'+
+    '</div>'+
+    (state.interviewHistory.length? '<div class="section" style="margin-top:30px;"><h3 style="font-size:15px;margin-bottom:10px;">Past attempts</h3>'+
+      state.interviewHistory.slice().reverse().map(h=>
+        '<div class="card card-pad row between" style="margin-bottom:8px;"><div><div style="font-weight:600;">'+h.mode+' interview · '+h.level+'</div><div class="small muted">'+h.date+'</div></div><div class="chip chip-primary">'+h.overall+'/100</div></div>'
+      ).join('')+
+    '</div>' : '')
+  );
+}
+
+/* =========================================================================
+   VIEW: INTERVIEW SETUP (per mode)
+========================================================================= */
+let setupState = {mode:null, resumeText:'', jdText:'', detected:null, jdDetected:null, selectedSkills:{}, includeMatch:false};
+
+function viewInterviewSetup(mode){
+  setupState.mode = mode;
+  if(mode==='resume') return setupResume();
+  if(mode==='jd') return setupJD();
+  return setupSkills();
+}
+
+function setupResume(){
+  const detected = setupState.detected;
+  return (
+    '<div class="crumbs"><a href="javascript:void(0)" onclick="App.navigate(\'interview\')">Mock Interview</a><span class="sep">/</span><span>Resume-based</span></div>'+
+    '<h2 style="font-size:22px;margin-bottom:16px;">Upload your resume</h2>'+
+    '<div class="grid split-13-1" style="gap:22px;align-items:start;">'+
+      '<div>'+
+        '<div class="upload-zone '+(setupState.resumeText?'filled':'')+'" onclick="document.getElementById(\'resume-file\').click()">'+
+          Icon('upload','ic')+
+          '<div style="font-weight:600;margin-top:10px;">'+(setupState.resumeText? 'Resume loaded ✓' : 'Click to upload your resume (.txt/.pdf demo)')+'</div>'+
+          '<div class="small muted" style="margin-top:4px;">Or use the demo resume below to try the flow instantly.</div>'+
+        '</div>'+
+        '<input type="file" id="resume-file" style="display:none" onchange="App.handleResumeUpload(event)" accept=".txt,.pdf,.doc,.docx" />'+
+        '<div class="row wrap gap-10" style="margin-top:12px;">'+
+          '<button class="btn btn-secondary btn-sm" onclick="App.useDemoResume()">Use demo resume</button>'+
+          (setupState.resumeText? '<button class="btn btn-primary btn-sm" onclick="App.analyzeResume()">Analyze resume</button>' : '')+
+        '</div>'+
+      '</div>'+
+      '<div class="card card-pad">'+
+        '<div style="font-weight:600;margin-bottom:10px;">AI detected</div>'+
+        (detected? (
+          '<div style="margin-bottom:10px;">'+ detected.skills.map(s=>'<span class="chip chip-teal" style="margin:2px;">'+s+' '+Icon('check','ic')+'</span>').join('') +'</div>'+
+          '<div class="small muted" style="margin-bottom:4px;">Projects</div>'+
+          '<ul style="padding-left:18px;margin-bottom:10px;">'+ detected.projects.map(p=>'<li class="small">'+p+'</li>').join('') +'</ul>'+
+          '<div class="small muted">Education</div><div class="small">'+detected.education+'</div>'+
+          '<button class="btn btn-primary btn-block" style="margin-top:16px;" onclick="App.navigate(\'interview-level\')">Continue</button>'
+        ) : '<p class="small muted">Upload or load a demo resume, then click "Analyze resume" to see detected skills here.</p>')+
+      '</div>'+
+    '</div>'
+  );
+}
+
+function setupJD(){
+  const jdDetected = setupState.jdDetected;
+  return (
+    '<div class="crumbs"><a href="javascript:void(0)" onclick="App.navigate(\'interview\')">Mock Interview</a><span class="sep">/</span><span>Job description-based</span></div>'+
+    '<h2 style="font-size:22px;margin-bottom:16px;">Paste the job description</h2>'+
+    '<div class="grid split-13-1" style="gap:22px;align-items:start;">'+
+      '<div>'+
+        '<textarea id="jd-textarea" rows="9" placeholder="Paste the job description here..." style="width:100%;border:1.5px solid var(--line);border-radius:12px;padding:14px;font-size:14px;font-family:inherit;resize:vertical;" onchange="App.setJDText(this.value)">'+setupState.jdText+'</textarea>'+
+        '<div class="row wrap gap-10" style="margin-top:12px;">'+
+          '<button class="btn btn-secondary btn-sm" onclick="App.useDemoJD()">Use demo JD</button>'+
+          '<button class="btn btn-primary btn-sm" onclick="App.analyzeJD()">Analyze JD</button>'+
+        '</div>'+
+        '<label class="check-row '+(setupState.includeMatch?'checked':'')+'" style="margin-top:16px;max-width:340px;" onclick="App.toggleMatch()"><span class="checkbox">'+(setupState.includeMatch?Icon('check','ic'):'')+'</span><span>Also upload my resume to compare against this JD</span></label>'+
+        (setupState.includeMatch? '<div class="upload-zone '+(setupState.resumeText?'filled':'')+'" style="margin-top:10px;" onclick="document.getElementById(\'resume-file-2\').click()">'+Icon('upload','ic')+'<div style="font-weight:600;margin-top:8px;">'+(setupState.resumeText?'Resume loaded ✓':'Click to upload resume')+'</div></div><input type="file" id="resume-file-2" style="display:none" onchange="App.handleResumeUpload(event)"/>' : '')+
+      '</div>'+
+      '<div class="card card-pad">'+
+        '<div style="font-weight:600;margin-bottom:10px;">Job requirements</div>'+
+        (jdDetected? (
+          '<div class="small muted" style="margin-bottom:6px;">Required</div>'+
+          jdDetected.required.map(s=> matchRow(s, !setupState.includeMatch || (setupState.detected && setupState.detected.skills.includes(s)))).join('')+
+          '<div class="small muted" style="margin:10px 0 6px;">Preferred</div>'+
+          jdDetected.preferred.map(s=> matchRow(s, !setupState.includeMatch || (setupState.detected && setupState.detected.skills.includes(s)))).join('')+
+          '<button class="btn btn-primary btn-block" style="margin-top:16px;" onclick="App.navigate(\'interview-level\')">Continue</button>'
+        ): '<p class="small muted">Paste or load a demo JD, then click "Analyze JD" to see requirements here.</p>')+
+      '</div>'+
+    '</div>'
+  );
+}
+function matchRow(skill, matched){
+  return '<div class="detect-row '+(matched?'':'missing')+'"><span style="font-weight:500;font-size:13.5px;text-transform:capitalize;">'+skill+'</span><span class="chip '+(matched?'chip-teal':'chip-coral')+'">'+(matched?'Match':'Missing')+'</span></div>';
+}
+
+function setupSkills(){
+  const allSkills = [];
+  BRANCHES[0].skills.forEach(s=>allSkills.push(s));
+  return (
+    '<div class="crumbs"><a href="javascript:void(0)" onclick="App.navigate(\'interview\')">Mock Interview</a><span class="sep">/</span><span>Skill-based</span></div>'+
+    '<h2 style="font-size:22px;margin-bottom:16px;">Select your skills</h2>'+
+    '<div class="grid split-13-1" style="gap:22px;align-items:start;">'+
+      '<div class="card card-pad">'+
+        '<div class="grid grid-2">'+
+        ['java','oop','sql','dsa','react','python','networks','dbms','cloud','javascript','aws','cybersecurity'].map(id=>{
+          const s = findSkill(id); if(!s) return '';
+          const checked = !!setupState.selectedSkills[id];
+          return '<label class="check-row '+(checked?'checked':'')+'" onclick="App.toggleSkillSelect(\''+id+'\')"><span class="checkbox">'+(checked?Icon('check','ic'):'')+'</span><span>'+s.skill.name+'</span></label>';
+        }).join('')+
+        '</div>'+
+      '</div>'+
+      '<div class="card card-pad">'+
+        '<div style="font-weight:600;margin-bottom:10px;">Number of questions</div>'+
+        '<div class="count-pill">'+[5,10,15].map(n=>'<button class="'+(setupState.qCount===n?'selected':'')+'" onclick="App.setQCount('+n+')">'+n+'</button>').join('')+'</div>'+
+        '<div style="margin-top:18px;font-weight:600;">Selected skills</div>'+
+        '<div class="row wrap gap-8" style="margin-top:8px;">'+ (Object.keys(setupState.selectedSkills).length? Object.keys(setupState.selectedSkills).map(id=>'<span class="chip chip-primary">'+(findSkill(id)?findSkill(id).skill.name:id)+'</span>').join('') : '<span class="small muted">Pick at least one skill</span>') +'</div>'+
+        '<button class="btn btn-primary btn-block" style="margin-top:18px;" onclick="App.navigate(\'interview-level\')" '+(Object.keys(setupState.selectedSkills).length===0?'disabled':'')+'>Continue</button>'+
+      '</div>'+
+    '</div>'
+  );
+}
+
+/* =========================================================================
+   VIEW: INTERVIEW LEVEL
+========================================================================= */
+let interviewConfig = {level:null};
+function viewInterviewLevel(){
+  const level = interviewConfig.level;
+  return (
+    '<h2 style="font-size:22px;margin-bottom:6px;">How would you like to prepare?</h2>'+
+    '<p class="small" style="margin-bottom:20px;">Pick a difficulty. Beginner unlocks an optional quick-prep module first.</p>'+
+    '<div class="grid grid-3" style="max-width:720px;">'+
+      diffCard('beginner','🌱','Beginner','Basic concepts, simple examples, foundational questions.')+
+      diffCard('intermediate','🚀','Intermediate','Conceptual + practical questions, moderate scenarios.')+
+      diffCard('advanced','🔥','Advanced','Deep technical, trade-offs, dynamic follow-ups.')+
+    '</div>'+
+    (level? (
+      level==='beginner'?
+      '<div class="card card-pad" style="max-width:560px;margin-top:22px;"><div style="font-weight:600;margin-bottom:6px;">Optional prep before the interview</div><p class="small" style="margin-bottom:14px;">We recommend a short refresher since you chose Beginner. You can skip straight to the interview if you feel ready.</p><div class="row wrap gap-10"><button class="btn btn-primary" onclick="App.navigate(\'interview-prep\')">Start recommended learning</button><button class="btn btn-secondary" onclick="App.navigate(\'interview-prep\',{skip:true})">Skip & start interview</button></div></div>'
+      :
+      '<div style="margin-top:22px;"><button class="btn btn-primary" onclick="App.navigate(\'interview-prep\')">Continue</button></div>'
+    ) : '')
+  );
+}
+function diffCard(key, emoji, label, desc){
+  const sel = interviewConfig.level===key;
+  return '<div class="card difficulty-card '+(sel?'selected':'')+'" onclick="App.setInterviewLevel(\''+key+'\')"><div class="emoji">'+emoji+'</div><div style="font-weight:700;">'+label+'</div><p class="small" style="margin-top:6px;">'+desc+'</p></div>';
+}
+
+/* =========================================================================
+   VIEW: PREPARATION (compact stage indicator)
+========================================================================= */
+function stageTrack(currentStage, scores){
+  const stages = [{key:'prep',label:'Preparation'},{key:'mocktest',label:'Mock Test'},{key:'interview',label:'Interview'}];
+  const idx = stages.findIndex(s=>s.key===currentStage);
+  const vertical = stages.map((s,i)=>{
+    const done = i<idx, current = i===idx;
+    return '<div class="stage-item">'+
+      '<div class="sdot '+(done?'done':current?'current':'')+'">'+(done?Icon('check','ic'):'')+'</div>'+
+      (i<stages.length-1? '<div class="sline '+(done?'done':'')+'"></div>' : '')+
+      '<div><div class="slabel">'+s.label+'</div>'+(scores[s.key]!=null? '<div class="sscore">'+scores[s.key]+'%</div>' : current? '<div class="sscore">Current</div>':'')+'</div>'+
+    '</div>';
+  }).join('');
+  const horiz = stages.map((s,i)=>{
+    const done = i<idx, current = i===idx;
+    return '<div class="stage-item"><div class="sdot '+(done?'done':current?'current':'')+'">'+(done?Icon('check','ic'):'')+'</div><div class="slabel">'+s.label+'</div>'+(scores[s.key]!=null?'<div class="sscore">'+scores[s.key]+'%</div>':'')+'</div>';
+  }).join('');
+  return '<div class="stage-track-v">'+vertical+'</div><div class="stage-track-h">'+horiz+'</div>';
+}
+
+let prepState = {score:82, done:false};
+function viewPreparation(){
+  const level = interviewConfig.level || 'intermediate';
+  return (
+    '<div class="stage-layout">'+
+      stageTrack('prep', {})+
+      '<div style="flex:1;">'+
+        '<h2 style="font-size:22px;margin-bottom:6px;">Quick preparation</h2>'+
+        '<p class="small" style="margin-bottom:18px;">A short refresher on the areas your interview will touch.</p>'+
+        '<div class="grid grid-2">'+
+          ['Java OOP','Arrays','SQL Basics','Communication'].map(topic=>
+            '<div class="card card-pad row gap-12"><div class="icon-box" style="background:var(--primary-tint);color:var(--primary);">'+Icon('learn')+'</div><div><div style="font-weight:600;font-size:14.5px;">'+topic+'</div><div class="small muted">Recommended refresher</div></div></div>'
+          ).join('')+
+        '</div>'+
+        '<div class="card card-pad" style="margin-top:18px;">'+
+          '<div class="row between" style="margin-bottom:8px;"><div style="font-weight:600;">Preparation progress</div><div style="font-weight:700;">'+prepState.score+'%</div></div>'+
+          '<div class="progress-track"><div class="progress-fill amber" style="width:'+prepState.score+'%"></div></div>'+
+        '</div>'+
+        '<button class="btn btn-primary" style="margin-top:20px;" onclick="App.navigate(\'interview-mocktest\')">Continue to mock test</button>'+
+      '</div>'+
+    '</div>'
+  );
+}
+
+/* =========================================================================
+   VIEW: MOCK TEST (before interview)
+========================================================================= */
+let mockTestState = {answers:{}, submitted:false};
+function viewMockTest(){
+  const qs = MOCKTEST_BANK.slice(0,10);
+  let correct = 0;
+  if(mockTestState.submitted) qs.forEach((q,i)=>{ if(mockTestState.answers[i]===q.correct) correct++; });
+  const pct = Math.round(correct/qs.length*100);
+  return (
+    '<div class="stage-layout">'+
+      stageTrack('mocktest', {prep:prepState.score})+
+      '<div style="flex:1;">'+
+        '<h2 style="font-size:22px;margin-bottom:6px;">Mock test</h2>'+
+        '<p class="small" style="margin-bottom:18px;">10 quick questions before the real interview.</p>'+
+        (!mockTestState.submitted?
+          '<div>'+qs.map((q,i)=>{
+            const chosen = mockTestState.answers[i];
+            return '<div class="card quiz-q"><div style="font-weight:600;margin-bottom:2px;">'+(i+1)+'. '+q.q+'</div>'+
+              q.options.map((opt,oi)=>'<div class="quiz-opt '+(chosen===oi?'selected':'')+'" onclick="App.selectMockTestAnswer('+i+','+oi+')"><span class="opt-letter">'+String.fromCharCode(65+oi)+'</span><span>'+opt+'</span></div>').join('')+
+            '</div>';
+          }).join('')+
+          '<button class="btn btn-primary" onclick="App.submitMockTest()">Submit mock test</button>'+
+          '</div>'
+          :
+          '<div class="card card-pad">'+
+            '<div class="row gap-16"><div><div style="font-family:\'Space Grotesk\';font-weight:700;font-size:30px;">'+correct+'/'+qs.length+'</div><div class="muted small">'+pct+'% correct</div></div>'+
+            '<div style="flex:1;">'+
+              '<div class="chip chip-teal" style="margin-bottom:6px;">✓ Strong areas: '+strongAreas(qs).join(', ')+'</div><br/>'+
+              '<div class="chip chip-coral">⚠ Areas to review: '+weakAreasList(qs).join(', ')+'</div>'+
+            '</div></div>'+
+            '<div class="row wrap gap-10" style="margin-top:18px;">'+
+              (pct<60? '<button class="btn btn-secondary" onclick="App.navigate(\'skill\',{skillId:\''+ (weakSkillIds(qs)[0]||'java') +'\'})">Review weak area</button>':'')+
+              '<button class="btn btn-primary" onclick="App.navigate(\'interview-session\')">'+(pct<60?'Start interview anyway':'Start interview')+'</button>'+
+            '</div>'+
+          '</div>'
+        )+
+      '</div>'+
+    '</div>'
+  );
+}
+function strongAreas(qs){
+  const bySkill = {};
+  qs.forEach((q,i)=>{ bySkill[q.skill]=bySkill[q.skill]||[]; bySkill[q.skill].push(mockTestState.answers[i]===q.correct); });
+  return Object.keys(bySkill).filter(s=> bySkill[s].filter(Boolean).length/bySkill[s].length >= 0.6).map(s=>skillLabel(s)).slice(0,3);
+}
+function weakAreasList(qs){
+  const bySkill = {};
+  qs.forEach((q,i)=>{ bySkill[q.skill]=bySkill[q.skill]||[]; bySkill[q.skill].push(mockTestState.answers[i]===q.correct); });
+  const weak = Object.keys(bySkill).filter(s=> bySkill[s].filter(Boolean).length/bySkill[s].length < 0.6).map(s=>skillLabel(s));
+  return weak.length? weak.slice(0,3) : ['None — nice work'];
+}
+function weakSkillIds(qs){
+  const bySkill = {};
+  qs.forEach((q,i)=>{ bySkill[q.skill]=bySkill[q.skill]||[]; bySkill[q.skill].push(mockTestState.answers[i]===q.correct); });
+  return Object.keys(bySkill).filter(s=> bySkill[s].filter(Boolean).length/bySkill[s].length < 0.6);
+}
+function skillLabel(id){ const f=findSkill(id); return f? f.skill.name : id; }
+
+/* =========================================================================
+   VIEW: INTERVIEW SESSION (the AI interview itself)
+========================================================================= */
+function buildInterviewSession(){
+  const level = interviewConfig.level || 'intermediate';
+  let skillIds = [];
+  if(setupState.mode==='skills'){ skillIds = Object.keys(setupState.selectedSkills); }
+  else if(setupState.mode==='resume' && setupState.detected){ skillIds = setupState.detected.skills; }
+  else if(setupState.mode==='jd' && setupState.jdDetected){ skillIds = setupState.jdDetected.required.concat(setupState.jdDetected.preferred); }
+  if(skillIds.length===0) skillIds=['java','oop'];
+  const count = setupState.qCount || 5;
+  const questions = getInterviewQuestions(skillIds, level, count);
+  return {
+    level, questions, idx:0, answers:[], camera:{active:false}, mic:{listening:false, transcript:''},
+    speaking:false, showFollowUpQueue:[], done:false,
+  };
+}
+
+function viewInterviewSession(){
+  if(!state.interviewSession) state.interviewSession = buildInterviewSession();
+  const s = state.interviewSession;
+  const q = s.questions[s.idx];
+  const total = s.questions.length;
+
+  return (
+    '<div class="stage-layout">'+
+      stageTrack('interview', {prep:prepState.score, mocktest: mockTestState.submitted? Math.round(Object.keys(mockTestState.answers).length? (MOCKTEST_BANK.slice(0,10).filter((q,i)=>mockTestState.answers[i]===q.correct).length/10*100):0) : null})+
+      '<div style="flex:1;min-width:0;">'+
+        '<div class="interview-stage">'+
+          '<div class="interview-top"><div class="row gap-10"><span class="chip chip-amber">'+s.level+'</span><span class="qcount">Question '+(s.idx+1)+' of '+total+'</span></div>'+
+          '<span class="qcount" id="eval-pending" style="display:none;">Evaluating…</span></div>'+
+          '<div class="interview-body">'+
+            '<div class="ai-avatar" id="ai-avatar">'+aiAvatarSVG()+'</div>'+
+            '<div class="qzone">'+
+              '<div class="qlabel">QUESTION '+(s.idx+1)+'</div>'+
+              '<div class="qtext" id="qtext">'+q.q+'</div>'+
+              '<div class="row gap-10 replay-btn">'+
+                '<button class="btn btn-secondary btn-sm" onclick="App.speakQuestion()">'+Icon('play','ic')+' Play / Replay</button>'+
+              '</div>'+
+              '<div class="caption-box" id="caption-box"><span class="ph">Captions will appear here while the question is read aloud.</span></div>'+
+            '</div>'+
+          '</div>'+
+          '<div class="interview-bottom">'+
+            (!s.camera.requested? cameraPromptHTML() : cameraAndMicHTML(s))+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'
+  );
+}
+function aiAvatarSVG(){
+  return '<svg viewBox="0 0 100 100" width="100%" height="100%" aria-label="AI interviewer avatar">'+
+    '<circle cx="50" cy="38" r="20" fill="#3A4472"/>'+
+    '<path d="M30 40 a20 20 0 0 1 40 0" fill="#3A4472"/>'+
+    '<rect x="26" y="62" width="48" height="34" rx="10" fill="#EE9F2E"/>'+
+    '<rect x="40" y="60" width="20" height="14" fill="#F6F8FF"/>'+
+    '<circle cx="42" cy="37" r="3" fill="#F6F8FF"/><circle cx="58" cy="37" r="3" fill="#F6F8FF"/>'+
+    '<rect class="mouth" x="44" y="47" width="12" height="4" rx="2" fill="#F6F8FF"/>'+
+  '</svg>';
+}
+function cameraPromptHTML(){
+  return '<div class="cam-prompt">'+
+    '<div class="cam-prompt-text"><div style="font-weight:600;color:#fff;">Camera helps analyze your interview presentation</div><div class="small" style="color:#9BA3C4;">This is optional — you can continue without it anytime.</div></div>'+
+    '<div class="cam-prompt-actions"><button class="btn btn-amber btn-sm" onclick="App.requestCamera()">Allow camera & mic</button><button class="btn btn-secondary btn-sm" style="background:transparent;border-color:rgba(255,255,255,0.3);color:#fff;" onclick="App.skipCamera()">Continue without camera</button></div>'+
+  '</div>';
+}
+function cameraAndMicHTML(s){
+  return '<div class="cam-row">'+
+    '<div class="cam-preview" id="cam-preview">'+(s.camera.active? '<video id="cam-video" autoplay muted playsinline></video>' : '<div class="cam-off">Camera off</div>')+'</div>'+
+    '<div class="mic-controls">'+
+      '<button class="mic-btn '+(s.mic.listening?'listening':'')+'" id="mic-btn" onclick="App.toggleMic()" aria-label="Start or stop answering">'+Icon('mic','ic')+'</button>'+
+      '<div class="waveform '+(s.mic.listening?'active':'')+'" aria-hidden="true">'+ Array.from({length:22}).map(()=>'<span></span>').join('') +'</div>'+
+      '<div class="small" style="color:#9BA3C4;">'+(s.mic.listening? 'Listening…' : (s.answered? 'Answer submitted' : 'Tap the mic to answer, or type below.'))+'</div>'+
+    '</div>'+
+  '</div>'+
+  '<div class="transcript-box" id="transcript-box">'+(s.mic.transcript? '<b>YOUR ANSWER</b><br/>'+s.mic.transcript : '<span class="ph">Your transcribed answer will appear here…</span>')+'</div>'+
+  '<textarea id="manual-answer" placeholder="Or type your answer here" style="width:100%;margin-top:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;padding:10px 12px;font-family:inherit;font-size:13.5px;" rows="2" oninput="App.updateManualAnswer(this.value)">'+(s.mic.transcript||'')+'</textarea>'+
+  '<div class="row wrap gap-10" style="margin-top:12px;">'+
+    '<button class="btn btn-amber btn-sm" onclick="App.submitAnswer()">Submit answer</button>'+
+  '</div>'+
+  '<div id="eval-result"></div>';
+}
+
+function initInterviewSessionDOM(){
+  const s = state.interviewSession;
+  if(!s) return;
+  if(s.camera.active && !s.camera.stream){
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+      navigator.mediaDevices.getUserMedia({video:true, audio:false}).then(function(stream){
+        s.camera.stream = stream;
+        const v = document.getElementById('cam-video');
+        if(v){ v.srcObject = stream; }
+      }).catch(function(){ s.camera.active=false; render(); });
+    }
+  } else if(s.camera.active && s.camera.stream){
+    const v = document.getElementById('cam-video');
+    if(v && !v.srcObject){ v.srcObject = s.camera.stream; }
+  }
+}
+
+/* =========================================================================
+   VIEW: INTERVIEW RESULTS
+========================================================================= */
+function viewInterviewResults(){
+  const s = state.interviewSession;
+  if(!s || s.answers.length===0){
+    return '<div class="empty-note">No completed interview yet. <a href="javascript:void(0)" onclick="App.navigate(\'interview\')" style="color:var(--primary);font-weight:600;">Start one</a>.</div>';
+  }
+  const n = s.answers.length;
+  const avg = key => Math.round(s.answers.reduce((a,x)=>a+x.eval[key],0)/n*10);
+  const overall = Math.round(s.answers.reduce((a,x)=>a+x.eval.overall,0)/n*10);
+  const categories = {technical:avg('technical'), communication:avg('communication'), confidence:avg('confidence'), relevance:avg('relevance'), problemSolving:avg('completeness')};
+  const weakSkills = [...new Set(s.answers.filter(a=>a.eval.overall<6.5).map(a=>a.question.skill))];
+  const strengths = [];
+  const improvements = [];
+  Object.keys(categories).forEach(k=>{ if(categories[k]>=78) strengths.push(catLabel(k)); else if(categories[k]<65) improvements.push(catLabel(k)); });
+  if(strengths.length===0) strengths.push('Consistent effort across questions');
+  if(improvements.length===0) improvements.push('Fine-tune answer structure for even higher scores');
+
+  const prev = state.interviewHistory[state.interviewHistory.length-1];
+
+  if(!s.saved){
+    state.interviewHistory.push({date:'Today', mode:setupState.mode||'skill', level:s.level, overall, categories});
+    weakSkills.forEach(id=>{ state.learningProgress[id] = Math.max(0, (state.learningProgress[id]||40) - 5); });
+    addXP(overall);
+    s.saved = true;
+  }
+
+  return (
+    '<div style="text-align:center;margin-bottom:10px;"><span class="chip chip-teal" style="font-size:14px;padding:8px 16px;">Interview completed 🎉</span></div>'+
+    '<div class="card card-pad result-hero" style="margin-bottom:24px;">'+
+      scoreRing(overall)+
+      '<div style="flex:1;min-width:240px;">'+
+        Object.keys(categories).map(k=>
+          '<div style="margin-bottom:10px;"><div class="row between small" style="margin-bottom:4px;"><span class="muted">'+catLabel(k)+'</span><span style="font-weight:600;">'+categories[k]+'%</span></div><div class="progress-track"><div class="progress-fill" style="width:'+categories[k]+'%"></div></div></div>'
+        ).join('')+
+      '</div>'+
+    '</div>'+
+
+    '<div class="grid grid-2 section">'+
+      '<div class="card card-pad"><h3 style="font-size:15px;margin-bottom:10px;">Strengths</h3><ul class="strength-list">'+strengths.map(x=>'<li>'+Icon('check','ic')+' '+x+'</li>').join('')+'</ul></div>'+
+      '<div class="card card-pad"><h3 style="font-size:15px;margin-bottom:10px;">Needs improvement</h3><ul class="weak-list">'+improvements.map(x=>'<li>⚠ '+x+'</li>').join('')+'</ul></div>'+
+    '</div>'+
+
+    (s.camera.active? '<div class="card card-pad section"><h3 style="font-size:15px;margin-bottom:8px;">Presentation notes</h3><p class="small">Try looking toward the camera a little more consistently, and keep your shoulders relaxed and centered in frame. These are general presentation tips, not an assessment of how you felt.</p></div>' : '')+
+
+    '<div class="card card-pad section">'+
+      '<h3 style="font-size:15px;margin-bottom:12px;">Recommended learning</h3>'+
+      (weakSkills.length? weakSkills.map(id=>{
+        const f = findSkill(id); if(!f) return '';
+        return '<div class="row between" style="padding:10px 0;border-top:1px solid var(--line);"><div style="font-weight:600;font-size:14px;">'+f.skill.name+' <span class="small muted">'+(state.learningProgress[id]||0)+'% mastered</span></div><button class="btn btn-secondary btn-sm" onclick="App.navigate(\'skill\',{skillId:\''+id+'\'})">Start learning</button></div>';
+      }).join('') : '<p class="small muted">No major weak areas detected — great consistency!</p>')+
+    '</div>'+
+
+    (prev? '<div class="card card-pad section"><h3 style="font-size:15px;margin-bottom:6px;text-align:center;">Improvement</h3>'+
+      '<div class="improve-compare"><div class="ibox"><b>'+prev.overall+'</b><span class="small muted">Previous</span></div><div class="arrow-mid">'+(overall>=prev.overall?'→ ↑':'→')+'</div><div class="ibox"><b style="color:var(--teal);">'+overall+'</b><span class="small muted">Latest</span></div>'+
+      '<div class="chip '+(overall>=prev.overall?'chip-teal':'chip-coral')+'" style="margin-left:10px;">'+(overall>=prev.overall?'+':'')+(overall-prev.overall)+'%</div></div>'+
+    '</div>' : '')+
+
+    '<div class="row wrap gap-10"><button class="btn btn-primary" onclick="App.retryInterview()">Re-interview</button><button class="btn btn-secondary" onclick="App.navigate(\'progress\')">View progress</button></div>'
+  );
+}
+function scoreRing(score){
+  const pct = score;
+  const size=150, r=size/2-10, c=2*Math.PI*r, off=c-(pct/100)*c;
+  return '<div class="score-ring"><svg viewBox="0 0 '+size+' '+size+'"><circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="var(--primary)" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" transform="rotate(-90 '+size/2+' '+size/2+')"/></svg><div class="num">'+score+'</div><div class="lbl">/ 100</div></div>';
+}
+
+/* =========================================================================
+   VIEW: PROGRESS DASHBOARD
+========================================================================= */
+function viewProgressDashboard(){
+  const readiness = Math.round((state.learningProgress.java*0.3+state.learningProgress.dsa*0.3+state.learningProgress.oop*0.2+state.learningProgress.sql*0.2));
+  const last = state.interviewHistory[state.interviewHistory.length-1];
+  return (
+    '<div class="grid grid-2 section">'+
+      '<div class="card card-pad">'+
+        '<div class="row between" style="margin-bottom:12px;"><h2 style="font-size:17px;">Interview readiness</h2><span style="font-weight:700;font-family:\'Space Grotesk\';">'+readiness+'%</span></div>'+
+        '<div class="progress-track" style="height:12px;"><div class="progress-fill" style="width:'+readiness+'%"></div></div>'+
+        '<div class="grid grid-4" style="margin-top:18px;">'+
+          Object.keys(last.categories).map(k=> '<div style="text-align:center;"><div style="font-family:\'Space Grotesk\';font-weight:700;font-size:18px;">'+last.categories[k]+'%</div><div class="small muted">'+catLabel(k)+'</div></div>').join('')+
+        '</div>'+
+      '</div>'+
+      '<div class="card card-pad">'+
+        '<h2 style="font-size:17px;margin-bottom:14px;">Learning mastery</h2>'+
+        Object.keys(state.learningProgress).map(id=>{
+          const f = findSkill(id); const name = f? f.skill.name : id;
+          return '<div style="margin-bottom:10px;"><div class="row between small" style="margin-bottom:4px;"><span>'+name+'</span><span style="font-weight:600;">'+state.learningProgress[id]+'%</span></div><div class="progress-track"><div class="progress-fill teal" style="width:'+state.learningProgress[id]+'%"></div></div></div>';
+        }).join('')+
+      '</div>'+
+    '</div>'+
+
+    '<div class="grid grid-3 section">'+
+      '<div class="card card-pad" style="text-align:center;"><div class="icon-box" style="margin:0 auto 10px;background:var(--amber-tint);color:#9C6A11;">'+Icon('flame')+'</div><div style="font-family:\'Space Grotesk\';font-weight:700;font-size:22px;">'+state.streak+' days</div><div class="small muted">Learning streak</div></div>'+
+      '<div class="card card-pad" style="text-align:center;"><div class="icon-box" style="margin:0 auto 10px;background:var(--teal-tint);color:#0E6E5C;">'+Icon('bolt')+'</div><div style="font-family:\'Space Grotesk\';font-weight:700;font-size:22px;">'+state.xp+'</div><div class="small muted">Total XP</div></div>'+
+      '<div class="card card-pad" style="text-align:center;"><div class="icon-box" style="margin:0 auto 10px;background:var(--primary-tint);color:var(--primary);">'+Icon('badge')+'</div><div style="font-family:\'Space Grotesk\';font-weight:700;font-size:22px;">'+state.badges.length+'</div><div class="small muted">Badges earned</div></div>'+
+    '</div>'+
+
+    '<div class="card card-pad">'+
+      '<h2 style="font-size:17px;margin-bottom:14px;">Interview history</h2>'+
+      state.interviewHistory.slice().reverse().map(h=>
+        '<div class="row between" style="padding:12px 0;border-top:1px solid var(--line);"><div><div style="font-weight:600;font-size:14px;">'+h.mode+' · '+h.level+'</div><div class="small muted">'+h.date+'</div></div><span class="chip chip-primary">'+h.overall+'/100</span></div>'
+      ).join('')+
+    '</div>'
+  );
+}
+
+/* =========================================================================
+   VIEW: ABOUT
+========================================================================= */
+function viewAbout(){
+  return '<div class="card card-pad" style="max-width:680px;">'+
+    '<h2 style="font-size:20px;margin-bottom:10px;">About Ascend</h2>'+
+    '<p style="margin-bottom:12px;">Ascend connects structured skill learning with realistic AI-powered interview practice, so preparation and performance feed directly into each other: learn a concept, practice it, get interviewed on it, and come straight back to the exact lesson you need.</p>'+
+    '<p class="small muted">This build runs on clearly-labelled demo AI logic (see the AIServices layer in the source) so the full experience — resume/JD parsing, question generation, speech, and evaluation — works end-to-end without external API keys. Swap in a real LLM, TTS/STT and parsing API to make it fully live.</p>'+
+  '</div>';
+}
+
+/* =========================================================================
+   TTS / STT helpers
+========================================================================= */
+let recognizer = null;
+function speakText(text, onend){
+  if(!('speechSynthesis' in window)){ if(onend) onend(); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.98; u.pitch = 1.0;
+    u.onend = function(){ if(onend) onend(); };
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(onend) onend(); }
+}
+
+/* =========================================================================
+   APP — action handlers exposed to inline onclick
+========================================================================= */
+window.App = {
+  navigate,
+
+  /* ---- learning: quiz ---- */
+  selectQuizAnswer(i, oi){ lessonQuizState.answers[i]=oi; document.getElementById('quiz-area').innerHTML = renderQuiz(getLesson(state.lastLesson.skillId, state.lastLesson.levelKey).quiz); },
+  submitQuiz(){
+    lessonQuizState.submitted = true;
+    const lesson = getLesson(state.lastLesson.skillId, state.lastLesson.levelKey);
+    let correctCount=0; lesson.quiz.forEach((q,i)=>{ if(lessonQuizState.answers[i]===q.correct) correctCount++; });
+    const skillId = state.lastLesson.skillId;
+    const gain = Math.round((correctCount/lesson.quiz.length)*8);
+    state.learningProgress[skillId] = Math.min(100, (state.learningProgress[skillId]||0) + gain);
+    addXP(correctCount*10);
+    document.getElementById('quiz-area').innerHTML = renderQuiz(lesson.quiz);
+    const ringHolder = document.querySelector('.lesson-block:last-child + .card, .card.card-pad.row.between');
+    render(); // re-render to reflect updated mastery ring & xp chip
+  },
+  retryQuiz(){ lessonQuizState = {key:state.lastLesson.skillId+state.lastLesson.levelKey, answers:{}, submitted:false}; render(); },
+
+  /* ---- learning: game ---- */
+  answerGame(oi){
+    const set = getGameSet(lessonGameState.key);
+    const item = set[lessonGameState.idx];
+    lessonGameState.answered = true; lessonGameState.chosen = oi;
+    if(oi===item.correct){ lessonGameState.score++; addXP(15); }
+    document.getElementById('game-area').innerHTML = renderGame(lessonGameState.key);
+  },
+  nextGame(){ lessonGameState.idx++; lessonGameState.answered=false; lessonGameState.chosen=null; document.getElementById('game-area').innerHTML = renderGame(lessonGameState.key); },
+  restartGame(skillId){ lessonGameState = {key:skillId, idx:0, score:0, answered:false, chosen:null}; document.getElementById('game-area').innerHTML = renderGame(skillId); },
+
+  /* ---- practice ---- */
+  selectPracticeAnswer(i,oi){ practiceState.answers[i]=oi; document.getElementById('practice-area').innerHTML = renderPracticeQuiz(MOCKTEST_BANK.slice(0,5)); },
+  submitPractice(){ practiceState.submitted=true; addXP(20); document.getElementById('practice-area').innerHTML = renderPracticeQuiz(MOCKTEST_BANK.slice(0,5)); render(); },
+  restartPractice(){ practiceState = {answers:{}, submitted:false}; render(); },
+
+  /* ---- interview setup ---- */
+  startInterviewSetup(mode){ setupState = {mode, resumeText:'', jdText:'', detected:null, jdDetected:null, selectedSkills:{}, includeMatch:false, qCount:5}; interviewConfig = {level:null}; navigate('interview-setup', {mode}); },
+  handleResumeUpload(ev){
+    const file = ev.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e){ setupState.resumeText = String(e.target.result||'').slice(0,4000); render(); };
+    reader.onerror = function(){ setupState.resumeText = 'Java Spring Boot SQL React project e-commerce'; render(); };
+    try{ reader.readAsText(file); }catch(e){ setupState.resumeText = 'Java Spring Boot SQL React project e-commerce'; render(); }
+  },
+  useDemoResume(){ setupState.resumeText = 'Experienced in Java, Spring Boot, SQL and React. Built an E-commerce Application and a Student Management System. B.Tech Computer Science.'; render(); },
+  analyzeResume(){ setupState.detected = AIServices.parseResume(setupState.resumeText); render(); },
+  setJDText(v){ setupState.jdText = v; },
+  useDemoJD(){ setupState.jdText = 'We are hiring a Java Backend Developer with strong Spring and SQL experience. AWS and Docker knowledge preferred.'; render(); },
+  analyzeJD(){ const ta = document.getElementById('jd-textarea'); if(ta) setupState.jdText = ta.value; setupState.jdDetected = AIServices.parseJD(setupState.jdText); render(); },
+  toggleMatch(){ setupState.includeMatch = !setupState.includeMatch; render(); },
+  toggleSkillSelect(id){ if(setupState.selectedSkills[id]) delete setupState.selectedSkills[id]; else setupState.selectedSkills[id]=true; render(); },
+  setQCount(n){ setupState.qCount = n; render(); },
+
+  setInterviewLevel(key){ interviewConfig.level = key; render(); },
+
+  requestCamera(){
+    state.interviewSession = state.interviewSession || buildInterviewSession();
+    state.interviewSession.camera.requested = true;
+    state.interviewSession.camera.active = true;
+    render();
+  },
+  skipCamera(){
+    state.interviewSession = state.interviewSession || buildInterviewSession();
+    state.interviewSession.camera.requested = true;
+    state.interviewSession.camera.active = false;
+    render();
+  },
+
+  speakQuestion(){
+    const s = state.interviewSession; if(!s) return;
+    const q = s.questions[s.idx];
+    const cap = document.getElementById('caption-box');
+    const avatar = document.getElementById('ai-avatar');
+    if(avatar) avatar.classList.add('talking');
+    if(cap) cap.innerHTML = q.q;
+    speakText(q.q, function(){ if(avatar) avatar.classList.remove('talking'); });
+  },
+
+  toggleMic(){
+    const s = state.interviewSession; if(!s) return;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!s.mic.listening){
+      s.mic.listening = true;
+      if(SR){
+        try{
+          recognizer = new SR();
+          recognizer.continuous = true; recognizer.interimResults = true; recognizer.lang='en-US';
+          recognizer.onresult = function(e){
+            let t = '';
+            for(let i=0;i<e.results.length;i++){ t += e.results[i][0].transcript + ' '; }
+            s.mic.transcript = t.trim();
+            const tb = document.getElementById('transcript-box'); if(tb) tb.innerHTML = '<b>YOUR ANSWER</b><br/>'+s.mic.transcript;
+            const ta = document.getElementById('manual-answer'); if(ta) ta.value = s.mic.transcript;
+          };
+          recognizer.onerror = function(){};
+          recognizer.start();
+        }catch(e){ /* fall through to manual typing */ }
+      }
+      render();
+    } else {
+      s.mic.listening = false;
+      if(recognizer){ try{ recognizer.stop(); }catch(e){} }
+      render();
+    }
+  },
+  updateManualAnswer(v){ if(state.interviewSession) state.interviewSession.mic.transcript = v; },
+
+  submitAnswer(){
+    const s = state.interviewSession; if(!s) return;
+    const q = s.questions[s.idx];
+    const transcript = s.mic.transcript || '';
+    const evalRes = AIServices.evaluateAnswer(q, transcript);
+    s.answers.push({question:q, transcript, eval:evalRes});
+
+    // dynamic follow-up
+    let inserted = false;
+    if(q.followUp && s.level!=='beginner'){
+      const hay = transcript.toLowerCase();
+      if(q.followUp.trigger.some(k=>hay.includes(k))){
+        s.questions.splice(s.idx+1, 0, q.followUp.question);
+        inserted = true;
+      }
+    }
+
+    const box = document.getElementById('eval-result');
+    if(box){
+      box.innerHTML = '<div class="eval-grid">'+
+        cell('Technical', evalRes.technical)+cell('Relevance', evalRes.relevance)+cell('Communication', evalRes.communication)+cell('Confidence', evalRes.confidence)+cell('Completeness', evalRes.completeness)+
+        '</div>'+
+        '<div class="feedback-note">'+evalRes.tip+'</div>'+
+        '<div style="text-align:right;margin-top:14px;"><button class="btn btn-amber btn-sm" onclick="App.nextQuestion()">'+(s.idx+1>=s.questions.length? 'See results' : 'Next question')+'</button></div>';
+    }
+    function cell(label,val){ return '<div class="eval-cell"><b>'+val+'/10</b><span>'+label+'</span></div>'; }
+  },
+
+  nextQuestion(){
+    const s = state.interviewSession; if(!s) return;
+    if(recognizer){ try{ recognizer.stop(); }catch(e){} }
+    s.mic.listening = false; s.mic.transcript='';
+    if(s.idx+1 >= s.questions.length){
+      if(s.camera.stream){ s.camera.stream.getTracks().forEach(t=>t.stop()); }
+      navigate('interview-results');
+    } else {
+      s.idx++;
+      render();
+    }
+  },
+
+  retryInterview(){
+    state.interviewSession = null;
+    mockTestState = {answers:{}, submitted:false};
+    navigate('interview-level');
+  },
+
+  /* ---- mock test ---- */
+  selectMockTestAnswer(i,oi){ mockTestState.answers[i]=oi; render(); },
+  submitMockTest(){ mockTestState.submitted = true; addXP(15); render(); },
+};
+
+/* =========================================================================
+   INIT
+========================================================================= */
+render();
+</script>
+</body>
+</html>
